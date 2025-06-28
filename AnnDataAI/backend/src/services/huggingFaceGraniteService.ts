@@ -41,6 +41,8 @@ interface MarketAnalysisParams {
 }
 
 // IBM Granite Models available on Hugging Face
+// IBM Granite Models - These exist on Hugging Face but require special access through IBM WatsonX
+// Most users will need to fall back to the WatsonX.AI API for these models
 const GRANITE_MODELS = {
   // For general text generation and analysis
   GRANITE_3_3_8B_INSTRUCT: 'ibm-granite/granite-3.3-8b-instruct',
@@ -65,9 +67,16 @@ class HuggingFaceGraniteService {
 
   constructor() {
     this.apiKey = process.env.HUGGINGFACE_API_KEY || '';
-    if (!this.apiKey) {
-      throw new Error('Hugging Face API key is required. Please set HUGGINGFACE_API_KEY environment variable.');
+    console.log('Using Hugging Face API key:', this.apiKey ? `${this.apiKey.substring(0, 5)}...` : 'undefined');
+    
+    // If key is missing or seems invalid, use a fallback approach
+    if (!this.apiKey || !this.apiKey.startsWith('hf_')) {
+      console.warn('Hugging Face API key is missing or invalid - will fall back to Watson service');
+      // Don't throw error, just let the service fail gracefully
     }
+    
+    console.log('Note: IBM Granite models on Hugging Face may require special access through IBM WatsonX.');
+    console.log('If Hugging Face API calls fail, the service will fall back to Watson\'s implementation of IBM Granite models.');
   }
 
   private async generateText(
@@ -77,6 +86,13 @@ class HuggingFaceGraniteService {
     temperature: number = 0.7
   ): Promise<string> {
     try {
+      // Only attempt API call if we have what appears to be a valid key
+      if (!this.apiKey || !this.apiKey.startsWith('hf_')) {
+        throw new Error('Valid Hugging Face API key not available');
+      }
+      
+      console.log(`Attempting to use IBM Granite model: ${model}`);
+      
       const response = await axios.post(
         `${this.baseURL}${model}`,
         {
@@ -95,7 +111,7 @@ class HuggingFaceGraniteService {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json'
           },
-          timeout: 30000
+          timeout: 60000 // Increased timeout for larger models
         }
       );
 
@@ -107,8 +123,29 @@ class HuggingFaceGraniteService {
         throw new Error('Unexpected response format from Hugging Face API');
       }
     } catch (error: any) {
-      console.error('Hugging Face API error:', error.response?.data || error.message);
-      throw new Error(`Failed to generate text with IBM Granite model: ${error.message}`);
+      console.error('Hugging Face API error for model', model, ':', error.response?.status, error.response?.data || error.message);
+      
+      // Check if we should try an alternate IBM Granite model
+      const currentModelKey = Object.entries(GRANITE_MODELS).find(([_, val]) => val === model)?.[0];
+      
+      if (currentModelKey === 'GRANITE_3_3_8B_INSTRUCT' && GRANITE_MODELS.GRANITE_3_3_2B_INSTRUCT) {
+        // If we failed with the 8B model, try the 2B model
+        try {
+          console.log(`Trying alternate IBM Granite model: ${GRANITE_MODELS.GRANITE_3_3_2B_INSTRUCT}`);
+          const altResponse = await this.generateText(
+            GRANITE_MODELS.GRANITE_3_3_2B_INSTRUCT,
+            prompt,
+            maxTokens,
+            temperature
+          );
+          return altResponse;
+        } catch (altError) {
+          console.error('Alternate model also failed');
+        }
+      }
+      
+      // If we're here, all attempts failed
+      throw new Error(`Failed to access IBM Granite models via Hugging Face API: ${error.message}`);
     }
   }
 

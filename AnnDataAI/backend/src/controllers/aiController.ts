@@ -64,17 +64,35 @@ export const getDiseaseDetection = async (
   next: NextFunction
 ) => {
   try {
-    const { cropType, symptoms, affectedArea, weatherConditions } = req.body;
+    const { 
+      cropType, 
+      symptoms, 
+      affectedArea, 
+      weatherConditions,
+      images,
+      hasImages,
+      analysisType
+    } = req.body;
 
     if (!cropType || !symptoms) {
       throw new CustomError("Crop type and symptoms are required", 400);
     }
 
+    // Log the request details for debugging
+    console.log(`[Disease Detection] Request received:
+    - Crop Type: ${cropType}
+    - Has Images: ${hasImages}
+    - Analysis Type: ${analysisType}
+    - Number of Images: ${images ? images.length : 0}`);
+
     const result = await watsonService.getDiseaseDetection({
       cropType,
       symptoms,
       affectedArea,
-      weatherConditions
+      weatherConditions,
+      images,
+      hasImages,
+      analysisType
     });
 
     res.status(200).json({

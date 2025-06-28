@@ -176,23 +176,10 @@ yarn.lock
 *HuggingFace*
 *hf-*
 
-# Development Test Scripts (Keep Local, Don't Commit)
+# Development Test Scripts
 backend/test-*.js
 backend/check-*.js
 backend/find-*.js
-backend/test-huggingface*.js
-backend/test-hf-*.js
-backend/test-inference.js
-backend/test-multiple-models.js
-backend/test-ibm-granite.js
-backend/test-granite.js
-
-# Authentication Test Files
-backend/test_auth_fix.js
-backend/test-complete-flow.js
-backend/test-frontend-flow.js
-backend/test-registration.js
-backend/socket-test.js
 
 # Temporary Development Files
 *.test.js
@@ -202,10 +189,6 @@ backend/socket-test.js
 
 # IBM Watson Service Stub (Development Only)
 **/ibmWatsonServiceStub.ts
-**/huggingFaceGraniteService.ts
-
-# Environment Example Files (Keep Templates Only)
-.env.example
 
 # Compilation and Build Artifacts
 *.js.map

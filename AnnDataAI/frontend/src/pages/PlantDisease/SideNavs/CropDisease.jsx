@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { LoaderCircle } from "lucide-react";
+import { useState, useRef } from "react";
+import { LoaderCircle, Upload, X, Camera } from "lucide-react";
 import ibmGraniteService from "../../../services/ibmGraniteService";
 
 const CropDisease = () => {
 	const [loading, setLoading] = useState(false);
 	const [result, setResult] = useState(null);
 	const [error, setError] = useState(null);
+	const [selectedImages, setSelectedImages] = useState([]);
+	const [imagePreviews, setImagePreviews] = useState([]);
+	const fileInputRef = useRef(null);
 	const [formData, setFormData] = useState({
 		cropType: '',
 		symptoms: '',
@@ -21,13 +24,93 @@ const CropDisease = () => {
 		}));
 	};
 
+	const handleImageUpload = (e) => {
+		const files = Array.from(e.target.files);
+		if (files.length === 0) return;
+
+		// Limit to 5 images
+		const newFiles = files.slice(0, 5 - selectedImages.length);
+		
+		// Validate file types and sizes
+		const validFiles = newFiles.filter(file => {
+			const isValidType = file.type.startsWith('image/');
+			const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB limit
+			
+			if (!isValidType) {
+				setError('Please upload only image files');
+				return false;
+			}
+			if (!isValidSize) {
+				setError('Image size should be less than 10MB');
+				return false;
+			}
+			return true;
+		});
+
+		if (validFiles.length > 0) {
+			setError(null);
+			setSelectedImages(prev => [...prev, ...validFiles]);
+			
+			// Create previews
+			validFiles.forEach(file => {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					setImagePreviews(prev => [...prev, {
+						file,
+						url: e.target.result,
+						id: Date.now() + Math.random()
+					}]);
+				};
+				reader.readAsDataURL(file);
+			});
+		}
+	};
+
+	const removeImage = (indexToRemove) => {
+		setSelectedImages(prev => prev.filter((_, index) => index !== indexToRemove));
+		setImagePreviews(prev => prev.filter((_, index) => index !== indexToRemove));
+	};
+
+	const convertImageToBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = reject;
+			reader.readAsDataURL(file);
+		});
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 		setError(null);
 		
 		try {
-			const response = await ibmGraniteService.detectDisease(formData);
+			// Convert images to base64 if any are selected
+			let imageData = [];
+			if (selectedImages.length > 0) {
+				imageData = await Promise.all(
+					selectedImages.map(async (file) => {
+						const base64 = await convertImageToBase64(file);
+						return {
+							data: base64,
+							name: file.name,
+							size: file.size,
+							type: file.type
+						};
+					})
+				);
+			}
+
+			// Enhanced form data with image analysis
+			const enhancedFormData = {
+				...formData,
+				images: imageData,
+				hasImages: imageData.length > 0,
+				analysisType: imageData.length > 0 ? 'image_and_text' : 'text_only'
+			};
+
+			const response = await ibmGraniteService.detectDisease(enhancedFormData);
 			setResult(response.data);
 		} catch (err) {
 			setError(err.message || 'Failed to detect disease');
@@ -44,6 +127,56 @@ const CropDisease = () => {
 				</h2>
 				
 				<form onSubmit={handleSubmit} className="space-y-6 mb-8">
+					{/* Image Upload Section */}
+					<div className="bg-blue-50 dark:bg-blue-900 p-6 rounded-lg border-2 border-dashed border-blue-300 dark:border-blue-600">
+						<h3 className="text-lg font-medium text-blue-800 dark:text-blue-200 mb-4 flex items-center">
+							<Camera className="mr-2" size={20} />
+							Upload Plant Images (Recommended for Better Analysis)
+						</h3>
+						
+						<input
+							ref={fileInputRef}
+							type="file"
+							multiple
+							accept="image/*"
+							onChange={handleImageUpload}
+							className="hidden"
+						/>
+						
+						<button
+							type="button"
+							onClick={() => fileInputRef.current?.click()}
+							className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center mb-4"
+						>
+							<Upload className="mr-2" size={18} />
+							Select Plant Images (Max 5 images, 10MB each)
+						</button>
+						
+						{imagePreviews.length > 0 && (
+							<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+								{imagePreviews.map((preview, index) => (
+									<div key={preview.id} className="relative">
+										<img
+											src={preview.url}
+											alt={`Plant ${index + 1}`}
+											className="w-full h-24 object-cover rounded-lg border-2 border-gray-300"
+										/>
+										<button
+											type="button"
+											onClick={() => removeImage(index)}
+											className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+										>
+											<X size={14} />
+										</button>
+									</div>
+								))}
+							</div>
+						)}
+						
+						<p className="text-sm text-blue-600 dark:text-blue-300 mt-2">
+							💡 For best results: Upload clear, well-lit images showing affected plant parts, leaves, stems, or fruits.
+						</p>
+					</div>
 					<div>
 						<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
 							Crop Type

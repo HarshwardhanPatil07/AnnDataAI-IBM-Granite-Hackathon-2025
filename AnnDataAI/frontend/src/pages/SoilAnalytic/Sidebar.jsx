@@ -9,6 +9,7 @@ import {
 import { WiDayCloudy } from "react-icons/wi";
 import { FaDrawPolygon } from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 export default function SideBar({
 	setActiveComponent,
@@ -64,6 +65,23 @@ export default function SideBar({
 					</ListItemPrefix>
 					<span className="text-blue-gray-900 dark:text-gray-300">
 						User Soil Report
+					</span>
+				</ListItem>
+
+				<ListItem
+					className={`hover:bg-blue-gray-100 dark:hover:bg-gray-700 ${
+						activeItem === "SoilReportHelper" ? "bg-blue-100 dark:bg-gray-700" : ""
+					}`}
+					onClick={() => {
+						setActiveComponent("SoilReportHelper");
+						setActiveItem("SoilReportHelper");
+					}}
+				>
+					<ListItemPrefix>
+						<QuestionMarkCircleIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+					</ListItemPrefix>
+					<span className="text-blue-gray-900 dark:text-gray-300">
+						Soil Report Helper
 					</span>
 				</ListItem>
 			</List>

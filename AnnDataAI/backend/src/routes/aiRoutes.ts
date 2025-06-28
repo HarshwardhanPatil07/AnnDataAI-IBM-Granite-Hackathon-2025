@@ -9,6 +9,7 @@ import {
   chatWithAgriBot,
   getGeospatialAnalysis,
   getIrrigationRequirement,
+  analyzeSoilReport,
   healthCheck
 } from "../controllers/aiController";
 
@@ -40,6 +41,9 @@ router.post("/geospatial-analysis", getGeospatialAnalysis);
 
 // Irrigation requirement endpoint
 router.post("/irrigation-requirement", getIrrigationRequirement);
+
+// Soil report analysis endpoint
+router.post("/analyze-soil-report", analyzeSoilReport);
 
 // Health check endpoint
 router.get("/health", healthCheck);

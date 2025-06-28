@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import SideBar from "./Sidebar";
 import SoilReport from "./SideNavs/SoilReport";
 import UserSoilReport from "./SideNavs/UserSoilReport";
+import SoilReportHelper from "./SideNavs/SoilReportHelper";
 
 const SoilAnalytic = () => {
 	// State to track the currently selected component
@@ -18,6 +19,8 @@ const SoilAnalytic = () => {
 				return <SoilReport />;
 			case "UserSoilReport":
 				return <UserSoilReport />;
+			case "SoilReportHelper":
+				return <SoilReportHelper />;
 			default:
 				return <SoilReport />;
 		}

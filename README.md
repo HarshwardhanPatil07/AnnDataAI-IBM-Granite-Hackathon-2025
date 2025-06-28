@@ -6,7 +6,9 @@
 
 ## 🎯 **Hackathon Submission: "AI & Automation Unpacked" June 2025**
 
-**AnnDataAI** is a revolutionary agricultural intelligence platform that leverages **100% IBM Granite models** on watsonx.ai to provide farmers with AI-powered crop recommendations, disease detection, yield predictions, and intelligent farming guidance.
+**AnnDataAI** is a revolutionary agricultural intelligence platform that leverages **100% IBM Granite models** via **Hugging Face** and watsonx.ai to provide farmers with AI-powered crop recommendations, disease detection, yield predictions, and intelligent farming guidance.
+
+**🚀 NEW:** Now using IBM Granite models on Hugging Face for enhanced performance and reliability!
 
 ---
 
@@ -16,25 +18,25 @@
 - Advanced soil analysis using N-P-K nutrients and pH levels
 - Climate-based crop selection with confidence scoring
 - Regional optimization for maximum yield potential
-- **Powered by:** `ibm/granite-13b-instruct-v2`
+- **Powered by:** `ibm-granite/granite-3.3-8b-instruct` via Hugging Face
 
 ### 🦠 **Disease Detection & Treatment**
 - Symptom-based plant disease diagnosis
 - Comprehensive treatment protocols (organic & chemical)
 - Preventive measures and recovery timelines
-- **AI Confidence:** 85-96% accuracy
+- **AI Confidence:** 85-96% accuracy using IBM Granite
 
 ### 📈 **Yield Prediction & Optimization**
 - Production forecasting with quality grade analysis
 - Risk assessment and mitigation strategies
 - Profit margin estimation and harvest timing
-- **Data-driven insights** for farming decisions
+- **Data-driven insights** powered by IBM Granite models
 
 ### 🤖 **AgriBot - Intelligent Farm Assistant**
 - Context-aware conversational AI
 - Expert agricultural guidance 24/7
 - Multi-language support with real-time responses
-- **Powered by:** IBM Granite conversational models
+- **Powered by:** `ibm-granite/granite-3.3-2b-instruct` for fast responses
 
 ### 🗺️ **Geospatial Crop Analysis**
 - Location-based crop suitability mapping
@@ -69,7 +71,8 @@
 - **TypeScript** - Type-safe development
 - **Socket.io** - Real-time communication
 - **MongoDB** - Database for user data and analytics
-- **IBM Cloud SDK** - Direct watsonx.ai integration
+- **Hugging Face API** - Primary access to IBM Granite models
+- **IBM Cloud SDK** - Fallback watsonx.ai integration
 
 ### **Frontend Experience**
 - **React.js** + **Vite** - Modern web application
@@ -83,13 +86,14 @@
 
 ### **Prerequisites**
 - Node.js 18+ and npm/yarn
-- IBM Cloud account with watsonx.ai access
+- Hugging Face account with API access (primary)
+- IBM Cloud account with watsonx.ai access (fallback)
 - MongoDB database (local or cloud)
 
 ### **1. Clone Repository**
 ```bash
-git clone https://github.com/yourusername/AnnDataAI.git
-cd AnnDataAI
+git clone https://github.com/HarshwardhanPatil07/AnnDataAI-IBM-Granite-Hackathon-2025.git
+cd AnnDataAI-IBM-Granite-Hackathon-2025
 ```
 
 ### **2. Backend Setup**
@@ -97,9 +101,12 @@ cd AnnDataAI
 cd AnnDataAI/backend
 npm install
 
-# Create .env file with your IBM credentials
+# Create .env file with your credentials
 cp .env.example .env
-# Edit .env with your WATSONX_API_KEY, WATSONX_PROJECT_ID, etc.
+# Edit .env with your HUGGINGFACE_API_KEY (primary) and IBM credentials (fallback)
+# HUGGINGFACE_API_KEY=your_hf_token_here
+# WATSONX_API_KEY=your_ibm_api_key_here
+# WATSONX_PROJECT_ID=your_project_id_here
 
 # Start backend server
 node server.js

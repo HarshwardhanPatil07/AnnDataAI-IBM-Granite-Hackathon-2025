@@ -22,6 +22,10 @@ interface DiseaseDetectionParams {
   symptoms: string;
   affectedArea: string;
   weatherConditions: string;
+  severity?: string;
+  location?: string;
+  previousTreatments?: string;
+  detectionType?: string;
   images?: Array<{
     data: string;
     name: string;
@@ -30,6 +34,9 @@ interface DiseaseDetectionParams {
   }>;
   hasImages?: boolean;
   analysisType?: string;
+  pestType?: string;
+  damageLevel?: string;
+  infestationStage?: string;
 }
 
 interface YieldPredictionParams {
@@ -204,7 +211,21 @@ Format your response with clear sections for each crop recommendation.`;
   }
 
   async getDiseaseDetection(params: DiseaseDetectionParams): Promise<any> {
-    let prompt = `PLANT DISEASE DIAGNOSIS & TREATMENT ANALYSIS
+    const isPestDetection = params.detectionType === 'pest_outbreak' || params.analysisType?.includes('pest');
+    
+    let prompt = isPestDetection ? 
+      `PEST OUTBREAK IDENTIFICATION & MANAGEMENT ANALYSIS
+
+ANALYSIS TYPE: ${params.analysisType || 'text_only'}
+CROP INFORMATION:
+- Crop Type: ${params.cropType}
+- Pest Symptoms & Damage: ${params.symptoms}
+- Affected Area: ${params.affectedArea}
+- Severity Level: ${params.severity || 'Not specified'}
+- Location: ${params.location || 'Not specified'}
+- Weather Conditions: ${params.weatherConditions}
+- Previous Treatments: ${params.previousTreatments || 'None'}` :
+      `PLANT DISEASE DIAGNOSIS & TREATMENT ANALYSIS
 
 ANALYSIS TYPE: ${params.analysisType || 'text_only'}
 CROP INFORMATION:
@@ -215,7 +236,27 @@ CROP INFORMATION:
 
     // Add image analysis context if images are provided
     if (params.hasImages && params.images && params.images.length > 0) {
-      prompt += `
+      if (isPestDetection) {
+        prompt += `
+- Number of Images Provided: ${params.images.length}
+- Image Analysis: Based on the uploaded images, perform visual pest identification
+
+PEST IMAGE ANALYSIS INSTRUCTIONS:
+🐛 Analyze the uploaded images for:
+- Visible pests (insects, larvae, eggs)
+- Pest damage patterns (chewed leaves, holes, feeding marks)
+- Secondary signs (honeydew, webbing, frass)
+- Pest-specific indicators (tunnels, mines, galls)
+- Damage severity and distribution
+
+ENHANCED PEST VISUAL DIAGNOSTIC CRITERIA:
+- Insect identification: size, color, shape, body parts
+- Damage patterns: feeding holes, skeletonized leaves, wilting
+- Pest signs: eggs, larvae, adult insects, webbing
+- Plant response: discoloration, deformation, stunting
+- Secondary damage: sooty mold, viral symptoms from pest vectors`;
+      } else {
+        prompt += `
 - Number of Images Provided: ${params.images.length}
 - Image Analysis: Based on the uploaded plant images, perform visual disease detection
 
@@ -233,9 +274,31 @@ ENHANCED VISUAL DIAGNOSTIC CRITERIA:
 - Structural damage: holes, tears, deformation
 - Growth abnormalities: stunting, abnormal growth patterns
 - Fungal indicators: white/gray powdery substances, mold growth`;
+      }
     }
 
-    prompt += `
+    if (isPestDetection) {
+      prompt += `
+
+REQUIRED PEST ANALYSIS:
+1. PRIMARY PEST IDENTIFICATION (with confidence %)
+2. PEST LIFE CYCLE STAGE (egg, larva, adult, etc.)
+3. DAMAGE SEVERITY ASSESSMENT (low/moderate/high/severe)
+4. IMMEDIATE CONTROL MEASURES (emergency treatment)
+5. INTEGRATED PEST MANAGEMENT (IPM) STRATEGY
+6. BIOLOGICAL CONTROL OPTIONS (natural predators, parasites)
+7. CHEMICAL CONTROL (if necessary, specific products)
+8. ORGANIC/NATURAL TREATMENT ALTERNATIVES
+9. PREVENTION STRATEGIES (future outbreak prevention)
+10. MONITORING SCHEDULE (when to check again)
+11. ECONOMIC THRESHOLD ANALYSIS (treatment cost vs. damage)
+12. RESISTANCE MANAGEMENT (avoiding pesticide resistance)
+${params.hasImages ? '13. VISUAL PEST CONFIRMATION (what the images show)' : ''}
+
+Provide specific pest identification with confidence scores (0-100%) and detailed integrated pest management protocols. Include both immediate action and long-term prevention strategies.
+${params.hasImages ? 'Correlate visual evidence from images with described symptoms for enhanced accuracy.' : ''}`;
+    } else {
+      prompt += `
 
 REQUIRED DIAGNOSIS:
 1. PRIMARY DISEASE IDENTIFICATION (with confidence %)
@@ -251,6 +314,7 @@ ${params.hasImages ? '10. IMAGE-BASED VISUAL CONFIRMATION (what the images revea
 
 Provide specific diagnostic confidence scores (0-100%) and detailed treatment protocols. Include both chemical and organic treatment options with application schedules.
 ${params.hasImages ? 'Correlate visual symptoms from images with described symptoms for enhanced accuracy.' : ''}`;
+    }
 
     const optimalModel = this.selectOptimalModel('disease-detection');
     const response = await this.generateText(prompt, optimalModel);

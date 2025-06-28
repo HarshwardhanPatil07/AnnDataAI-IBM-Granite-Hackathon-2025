@@ -2,6 +2,7 @@ import express from "express";
 import {
   getCropRecommendation,
   getDiseaseDetection,
+  getPestOutbreakDetection,
   getYieldPrediction,
   getMarketAnalysis,
   getFertilizerRecommendation,
@@ -18,6 +19,9 @@ router.post("/crop-recommendation", getCropRecommendation);
 
 // Disease detection endpoint
 router.post("/disease-detection", getDiseaseDetection);
+
+// Pest outbreak detection endpoint
+router.post("/pest-outbreak", getPestOutbreakDetection);
 
 // Yield prediction endpoint
 router.post("/yield-prediction", getYieldPrediction);

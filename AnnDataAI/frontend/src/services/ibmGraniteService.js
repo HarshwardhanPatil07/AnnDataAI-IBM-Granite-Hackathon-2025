@@ -7,6 +7,9 @@ class IBMGraniteService {
 
   async makeRequest(endpoint, data) {
     try {
+      console.log(`Making request to: ${this.baseURL}${endpoint}`);
+      console.log('Request data:', data);
+      
       const response = await fetch(`${this.baseURL}${endpoint}`, {
         method: 'POST',
         headers: {
@@ -15,11 +18,17 @@ class IBMGraniteService {
         body: JSON.stringify(data),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
 
       const result = await response.json();
+      console.log('Success response:', result);
       
       // Log model information for debugging
       if (result.model_info) {
@@ -29,6 +38,12 @@ class IBMGraniteService {
       return result;
     } catch (error) {
       console.error(`Error calling ${endpoint}:`, error);
+      
+      // Provide more specific error messages
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        throw new Error(`Network error: Unable to connect to the backend server. Please check if the backend is running on ${this.baseURL}.`);
+      }
+      
       throw error;
     }
   }
@@ -41,6 +56,11 @@ class IBMGraniteService {
   // Disease Detection using IBM Granite on Hugging Face
   async detectDisease(diseaseData) {
     return this.makeRequest('/disease-detection', diseaseData);
+  }
+
+  // Pest Outbreak Detection using IBM Granite AI
+  async detectPestOutbreak(pestData) {
+    return this.makeRequest('/pest-outbreak', pestData);
   }
 
   // Yield Prediction using IBM Granite on Hugging Face

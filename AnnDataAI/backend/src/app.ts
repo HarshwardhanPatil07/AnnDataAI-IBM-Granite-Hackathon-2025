@@ -12,8 +12,8 @@ import aiRoutes from "./routes/aiRoutes";
 const app = express();
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' })); // Increased limit for image uploads
+app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Increased limit for image uploads
 app.use(
   cors({
     origin: [

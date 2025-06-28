@@ -379,4 +379,68 @@ export const healthCheck = async (
   }
 };
 
+// @desc    Get pest outbreak detection and management using IBM Granite AI via Watson Cloud
+// @route   POST /api/ai/pest-outbreak
+// @access  Public
+export const getPestOutbreakDetection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { 
+      cropType, 
+      symptoms, 
+      affectedArea, 
+      weatherConditions,
+      images,
+      hasImages,
+      pestType,
+      damageLevel,
+      infestationStage
+    } = req.body;
+
+    if (!cropType || !symptoms) {
+      throw new CustomError("Crop type and symptoms are required", 400);
+    }
+
+    // Log the request details for debugging
+    console.log(`[Pest Outbreak Detection] Request received:
+    - Crop Type: ${cropType}
+    - Has Images: ${hasImages}
+    - Pest Type: ${pestType}
+    - Damage Level: ${damageLevel}
+    - Infestation Stage: ${infestationStage}
+    - Number of Images: ${images ? images.length : 0}`);
+
+    const result = await watsonService.getDiseaseDetection({
+      cropType,
+      symptoms,
+      affectedArea,
+      weatherConditions,
+      images,
+      hasImages,
+      analysisType: 'pest_outbreak',
+      detectionType: 'pest_outbreak',
+      pestType,
+      damageLevel,
+      infestationStage
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Pest outbreak detection completed using IBM Granite models via Watson Cloud",
+      data: result,
+      timestamp: new Date().toISOString(),
+      model_info: {
+        service: "IBM Watson Cloud",
+        model_family: "IBM Granite",
+        source: "watsonx.ai"
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {};

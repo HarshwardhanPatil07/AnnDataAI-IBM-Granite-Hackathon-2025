@@ -427,3 +427,15 @@ demo-videos/
 presentation-drafts/
 backup/
 temp/
+
+# Internal setup and documentation files (not needed for hackathon submission)
+GITHUB_REPOSITORY_SETUP.md
+MIGRATION_COMPLETION_SUMMARY.md
+IBM_WATSONX_SETUP_GUIDE.md
+HACKATHON_NEXT_STEPS_GUIDE.md
+IBM_GRANITE_MODEL_OPTIMIZATION_GUIDE.md
+IBM_GRANITE_INTEGRATION_COMPLETE.md
+
+# Test files
+test-*.js
+*-test.js

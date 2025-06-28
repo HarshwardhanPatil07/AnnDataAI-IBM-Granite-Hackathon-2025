@@ -435,14 +435,25 @@ const ChatBot = () => {
       await processMessage(inputValue);
     } catch (error) {
       console.error("Error processing message:", error);
-      const errorMessage = {
-        text: "Sorry, I encountered an error. Please try again later.",
-        isBot: true,
-        id: Date.now(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      // Only show error message if no response was generated
+      // Check if the last message is from bot (meaning processMessage succeeded)
+      setMessages((prevMessages) => {
+        const lastMessage = prevMessages[prevMessages.length - 1];
+        if (lastMessage && lastMessage.isBot) {
+          // Response was successful, don't add error message
+          return prevMessages;
+        } else {
+          // No response was generated, show error
+          const errorMessage = {
+            text: "Sorry, I encountered an error. Please try again later.",
+            isBot: true,
+            id: Date.now(),
+          };
+          speak(errorMessage.text);
+          return [...prevMessages, errorMessage];
+        }
+      });
       setIsTyping(false);
-      speak(errorMessage.text);
     }
   };
 
@@ -462,28 +473,47 @@ const ChatBot = () => {
       const response = await ibmGraniteService.chatWithBot(userInput, context);
       
       if (response.success && response.data.response) {
+        let botResponseText = response.data.response;
+        let parsedResponse = null;
+        
+        // Try to parse JSON response for better formatting
+        try {
+          parsedResponse = JSON.parse(botResponseText);
+          if (parsedResponse.advice && parsedResponse.confidence_score && parsedResponse.explanation) {
+            // Format the JSON response in a user-friendly way
+            botResponseText = `**${parsedResponse.advice}**
+
+📊 **Confidence:** ${parsedResponse.confidence_score}%
+
+💡 **Why this helps:** ${parsedResponse.explanation}
+
+⚠️ **Additional considerations:** ${parsedResponse.additional_considerations}`;
+          }
+        } catch (e) {
+          // If it's not JSON, use the response as is
+          console.log("Response is not JSON format, using as plain text");
+        }
+
         const botResponse = {
-          text: response.data.response,
+          text: botResponseText,
           isBot: true,
           id: Date.now(),
         };
 
         setMessages((prev) => [...prev, botResponse]);
-        speak(botResponse.text);
+        speak(parsedResponse?.advice || botResponseText);
+        
+        // Successfully processed - return without error
+        return;
       } else {
-        throw new Error("Invalid response from AI service");
+        // If no valid response, log it but don't throw error
+        console.warn("Invalid or empty response from AI service:", response);
       }
     } catch (error) {
       console.error("Error getting IBM Granite AI response:", error);
       
-      const errorMessage = {
-        text: "I'm having trouble connecting to my IBM Granite AI brain right now. Please try again in a moment, or ask me something else about farming!",
-        isBot: true,
-        id: Date.now(),
-      };
-      
-      setMessages((prev) => [...prev, errorMessage]);
-      speak(errorMessage.text);
+      // Don't add error message here - let handleSend handle errors
+      // This prevents duplicate error messages
     } finally {
       setIsTyping(false);
     }

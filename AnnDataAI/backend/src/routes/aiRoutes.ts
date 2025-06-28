@@ -7,7 +7,8 @@ import {
   getFertilizerRecommendation,
   chatWithAgriBot,
   getGeospatialAnalysis,
-  getIrrigationRequirement
+  getIrrigationRequirement,
+  healthCheck
 } from "../controllers/aiController";
 
 const router = express.Router();
@@ -35,5 +36,8 @@ router.post("/geospatial-analysis", getGeospatialAnalysis);
 
 // Irrigation requirement endpoint
 router.post("/irrigation-requirement", getIrrigationRequirement);
+
+// Health check endpoint
+router.get("/health", healthCheck);
 
 export default router;

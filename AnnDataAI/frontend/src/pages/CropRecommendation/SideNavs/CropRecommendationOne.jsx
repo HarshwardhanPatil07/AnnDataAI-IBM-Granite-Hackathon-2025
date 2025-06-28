@@ -49,7 +49,15 @@ const CropRecommendationOne = () => {
 			console.log('Submitting data:', requestData);
 			const response = await ibmGraniteService.getCropRecommendation(requestData);
 			console.log('Received response:', response);
-			setResult(response);
+			
+			// Extract the actual data from the response
+			const extractedData = {
+				...response.data, // This contains the Watson service response
+				timestamp: response.timestamp,
+				model_info: response.model_info
+			};
+			
+			setResult(extractedData);
 		} catch (err) {
 			console.error('Error in crop recommendation:', err);
 			setError(err.message || 'Failed to get crop recommendations');

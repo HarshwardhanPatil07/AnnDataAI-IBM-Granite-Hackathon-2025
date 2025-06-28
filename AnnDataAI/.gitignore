@@ -1,0 +1,229 @@
+# ========================================
+# AnnDataAI (KrishiMitra) - GitIgnore File
+# ========================================
+
+# Environment Files (CRITICAL - Contains API Keys)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+**/.env
+**/config.json
+
+# Node.js Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm
+.yarn-integrity
+
+# Build Outputs
+dist/
+build/
+out/
+coverage/
+
+# TypeScript Build Info
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+lerna-debug.log*
+
+# Runtime Data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage Directory Used by Tools Like Istanbul
+coverage/
+*.lcov
+
+# Nyc Test Coverage
+.nyc_output
+
+# Dependency Directories
+node_modules/
+jspm_packages/
+
+# Optional npm Cache Directory
+.npm
+
+# Optional REPL History
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity File
+.yarn-integrity
+
+# dotenv Environment Variables File
+.env
+
+# parcel-bundler Cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js Build Output
+.next
+
+# nuxt.js Build Output
+.nuxt
+
+# vuepress Build Output
+.vuepress/dist
+
+# Serverless Directories
+.serverless
+
+# FuseBox Cache
+.fusebox/
+
+# DynamoDB Local Files
+.dynamodb/
+
+# TernJS Port File
+.tern-port
+
+# Stores VSCode Versions Used for Testing VSCode Extensions
+.vscode-test
+
+# VS Code Settings (Keep Project Settings But Ignore User Settings)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# IDEs and Editors
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python (If Any Python Scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Upload Directories
+uploads/
+upload/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+
+# Test Files and Scripts (Development Only)
+test-*.js
+test-*.ts
+*test*.js
+*test*.ts
+check-*.js
+find-*.js
+*-test.js
+*-test.ts
+
+# Stub and Mock Files
+*Stub.ts
+*Mock.ts
+*stub.js
+*mock.js
+
+# API Documentation (Auto-generated)
+docs/api/
+
+# Backup Files
+*.bak
+*.backup
+
+# Lock Files (Keep package.json, Ignore Locks)
+package-lock.json
+yarn.lock
+
+# ========================================
+# Project Specific Exclusions
+# ========================================
+
+# Hugging Face Related Files (Removed for Hackathon Compliance)
+*huggingface*
+*HuggingFace*
+*hf-*
+
+# Development Test Scripts (Keep Local, Don't Commit)
+backend/test-*.js
+backend/check-*.js
+backend/find-*.js
+backend/test-huggingface*.js
+backend/test-hf-*.js
+backend/test-inference.js
+backend/test-multiple-models.js
+backend/test-ibm-granite.js
+backend/test-granite.js
+
+# Authentication Test Files
+backend/test_auth_fix.js
+backend/test-complete-flow.js
+backend/test-frontend-flow.js
+backend/test-registration.js
+backend/socket-test.js
+
+# Temporary Development Files
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# IBM Watson Service Stub (Development Only)
+**/ibmWatsonServiceStub.ts
+**/huggingFaceGraniteService.ts
+
+# Environment Example Files (Keep Templates Only)
+.env.example
+
+# Compilation and Build Artifacts
+*.js.map
+*.d.ts.map
+
+# ========================================
+# What TO Include (Important Files)
+# ========================================
+# ✅ package.json (both frontend/backend)
+# ✅ tsconfig.json
+# ✅ Source code (.ts, .tsx, .js, .jsx)
+# ✅ Configuration files (non-sensitive)
+# ✅ README.md
+# ✅ Public assets
+# ✅ Component files
+# ✅ Service files (production only)
+# ✅ Route files
+# ✅ Controller files
+# ✅ Model files
+# ✅ Middleware files
+# ✅ Utility files

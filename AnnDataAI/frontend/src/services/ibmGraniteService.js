@@ -23,7 +23,7 @@ class IBMGraniteService {
       
       // Log model information for debugging
       if (result.model_info) {
-        console.log(`Using ${result.model_info.model_family} via ${result.model_info.primary_service}:`, result.model_info.specific_model);
+        console.log(`Using ${result.model_info.model_family} via ${result.model_info.service}:`, result.model_info.source || 'IBM Granite AI');
       }
       
       return result;

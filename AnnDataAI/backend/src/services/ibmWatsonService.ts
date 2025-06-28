@@ -46,50 +46,82 @@ class IBMWatsonService {
   private projectId: string;
 
   constructor() {
+    // Log the credentials being used (masking the API key for security)
+    const apiKey = process.env.WATSONX_API_KEY || '';
+    const projectId = process.env.WATSONX_PROJECT_ID || '';
+    const serviceUrl = process.env.WATSONX_URL || 'https://us-south.ml.cloud.ibm.com';
+    
+    console.log(`[IBM Watson Service] Initializing with:
+    - API Key: ${apiKey ? `${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)}` : 'NOT_SET'}
+    - Project ID: ${projectId}
+    - Service URL: ${serviceUrl}`);
+
     this.watsonxAI = WatsonXAI.newInstance({
       version: '2024-05-31',
       authenticator: new IamAuthenticator({
-        apikey: process.env.WATSONX_API_KEY || ''
+        apikey: apiKey
       }),
-      serviceUrl: process.env.WATSONX_URL || 'https://us-south.ml.cloud.ibm.com'
+      serviceUrl: serviceUrl
     });
-    this.projectId = process.env.WATSONX_PROJECT_ID || '';
+    this.projectId = projectId;
   }
 
   public async generateText(prompt: string, modelId: string = 'ibm/granite-13b-instruct-v2'): Promise<string> {
     try {
+      console.log(`[Watson AI] Making request with model: ${modelId}`);
+      console.log(`[Watson AI] Project ID: ${this.projectId}`);
+      console.log(`[Watson AI] Prompt length: ${prompt.length} characters`);
+      
       const params = {
         input: prompt,
         modelId,
         projectId: this.projectId,
         parameters: {
           decoding_method: 'greedy',
-          max_new_tokens: 1000,
-          min_new_tokens: 1,
+          max_new_tokens: 2000, // Increased for more detailed responses
+          min_new_tokens: 50, // Ensure minimum response length
           stop_sequences: [],
           repetition_penalty: 1.05,
-          temperature: 0.7,
-          top_p: 0.9
+          temperature: 0.8, // Slightly higher for more creative responses
+          top_p: 0.95 // Increased for better token selection
         }
       };
 
+      console.log(`[Watson AI] Request parameters:`, JSON.stringify(params, null, 2));
+      
       const response = await this.watsonxAI.generateText(params);
-      return response.result?.results?.[0]?.generated_text || 'No response generated';
-    } catch (error) {
+      
+      console.log(`[Watson AI] Full response:`, JSON.stringify(response, null, 2));
+      
+      const generatedText = response.result?.results?.[0]?.generated_text;
+      console.log(`[Watson AI] Generated text:`, generatedText);
+      
+      if (!generatedText || generatedText.trim() === '') {
+        console.warn(`[Watson AI] Empty response received`);
+        return 'No response generated from AI model';
+      }
+      
+      return generatedText;
+    } catch (error: any) {
       console.error('Error generating text from IBM Watson:', error);
-      throw new Error('Failed to generate response from IBM Watson AI');
+      if (error.message?.includes('unauthorized') || error.message?.includes('401')) {
+        throw new Error('Authentication failed - please check your API key');
+      } else if (error.message?.includes('project') || error.message?.includes('403')) {
+        throw new Error('Project access denied - please check your project ID');
+      }
+      throw new Error(`Failed to generate response from IBM Watson AI: ${error.message || error}`);
     }
   }
 
   // Helper method to select the optimal Granite model for each task
   private selectOptimalModel(taskType: string): string {
-    // Note: Based on available models in watsonx.ai instance
-    // Currently only ibm/granite-13b-instruct-v2 is confirmed to be available
+    // Updated to use the newer Granite 3.3 model as recommended by IBM
+    // ibm/granite-13b-instruct-v2 is deprecated as of 2025-06-18
     switch(taskType) {
       case 'chat':
       case 'conversation':
       case 'chatbot':
-        return 'ibm/granite-13b-instruct-v2'; // Use instruct model for chat
+        return 'ibm/granite-3-3-8b-instruct'; // Use newer instruct model for chat
       
       case 'analysis':
       case 'crop-recommendation':
@@ -97,57 +129,56 @@ class IBMWatsonService {
       case 'yield-prediction':
       case 'market-analysis':
       case 'geospatial':
-        return 'ibm/granite-13b-instruct-v2'; // Best for complex analytical tasks
+        return 'ibm/granite-3-3-8b-instruct'; // Best for complex analytical tasks
       
       case 'code':
       case 'data-processing':
       case 'technical':
-        return 'ibm/granite-13b-instruct-v2'; // Use main model for technical tasks
+        return 'ibm/granite-3-3-8b-instruct'; // Use newer model for technical tasks
       
       case 'embedding':
       case 'similarity':
       case 'search':
-        return 'ibm/granite-13b-instruct-v2'; // Use main model for all tasks
+        return 'ibm/granite-3-3-8b-instruct'; // Use newer model for all tasks
       
       case 'classification':
       case 'fertilizer':
       case 'irrigation':
-        return 'ibm/granite-13b-instruct-v2'; // Use main model for classification
+        return 'ibm/granite-3-3-8b-instruct'; // Use newer model for classification
       
       default:
-        return 'ibm/granite-13b-instruct-v2'; // Default to the confirmed working model
+        return 'ibm/granite-3-3-8b-instruct'; // Default to the newer recommended model
     }
   }
 
   async getCropRecommendation(params: CropRecommendationParams): Promise<any> {
-    const prompt = `As an agricultural expert, analyze these soil and environmental conditions to recommend the best crops:
+    const prompt = `You are an agricultural expert. Based on the following soil and environmental data, recommend the best crops for cultivation:
 
-SOIL ANALYSIS:
-- Nitrogen (N): ${params.nitrogen} ppm
-- Phosphorus (P): ${params.phosphorus} ppm  
-- Potassium (K): ${params.potassium} ppm
+Soil Analysis:
+- Nitrogen: ${params.nitrogen} ppm
+- Phosphorus: ${params.phosphorus} ppm  
+- Potassium: ${params.potassium} ppm
 - pH Level: ${params.ph}
 
-ENVIRONMENTAL CONDITIONS:
+Environmental Conditions:
 - Temperature: ${params.temperature}°C
 - Humidity: ${params.humidity}%
-- Annual Rainfall: ${params.rainfall}mm
+- Rainfall: ${params.rainfall}mm
 - Location: ${params.state || 'India'}, ${params.district || 'General'}
 - Soil Type: ${params.soilType || 'Mixed'}
 - Climate: ${params.climate || 'Temperate'}
 - Area: ${params.area || 'Small scale'} 
 - Season: ${params.season || 'Current'}
 
-ANALYSIS REQUIRED:
-1. TOP 3 RECOMMENDED CROPS (with specific varieties)
-2. EXPECTED YIELD (per hectare with confidence scores)
-3. WATER REQUIREMENTS (detailed irrigation schedule)
-4. FERTILIZER RECOMMENDATIONS (NPK ratios and organic options)
-5. PLANTING & HARVESTING CALENDAR (optimal timing)
-6. MARKET DEMAND & PROFITABILITY (current trends)
-7. RISK ASSESSMENT (pests, diseases, weather risks)
+Please provide:
+1. Top 3 recommended crops with specific varieties
+2. Expected yield per hectare for each crop
+3. Basic fertilizer requirements (NPK recommendations)
+4. Water requirements and irrigation schedule
+5. Planting and harvesting timeline
+6. Potential risks and mitigation strategies
 
-Provide specific, actionable recommendations with confidence scores (0-100%) for each crop. Format as structured analysis with clear sections.`;
+Format your response with clear sections for each crop recommendation.`;
 
     const optimalModel = this.selectOptimalModel('crop-recommendation');
     const response = await this.generateText(prompt, optimalModel);

@@ -119,6 +119,32 @@ class IBMGraniteService {
   async getFarmerEducation(educationData) {
     return this.makeRequest('/farmer-education', educationData);
   }
+
+  // Market Analysis (alias for compatibility)
+  async getMarketAnalysis(marketData) {
+    return this.makeRequest('/market-analysis', marketData);
+  }
+
+  // Price Prediction using IBM Granite
+  async getPricePrediction(priceData) {
+    return this.makeRequest('/price-prediction', priceData);
+  }
+
+  // Market Price Analysis
+  async getMarketPriceAnalysis(analysisData) {
+    return this.makeRequest('/market-analysis', {
+      ...analysisData,
+      analysisType: 'market_price_analysis'
+    });
+  }
+
+  // AnnData Market Planner
+  async getMarketPlanner(plannerData) {
+    return this.makeRequest('/market-analysis', {
+      ...plannerData,
+      analysisType: 'market_planning'
+    });
+  }
 }
 
 export default new IBMGraniteService();

@@ -5,6 +5,7 @@ import {
   getPestOutbreakDetection,
   getYieldPrediction,
   getMarketAnalysis,
+  getPricePrediction,
   getFertilizerRecommendation,
   chatWithAgriBot,
   getGeospatialAnalysis,
@@ -33,6 +34,9 @@ router.post("/yield-prediction", getYieldPrediction);
 
 // Market analysis endpoint
 router.post("/market-analysis", getMarketAnalysis);
+
+// Price prediction endpoint
+router.post("/price-prediction", getPricePrediction);
 
 // Fertilizer recommendation endpoint
 router.post("/fertilizer-recommendation", getFertilizerRecommendation);

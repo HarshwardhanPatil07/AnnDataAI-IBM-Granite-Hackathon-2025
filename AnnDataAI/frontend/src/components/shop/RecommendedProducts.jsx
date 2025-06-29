@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, Grid, useTheme, Button } from "@mui/material";
 import ProductCard from "./ProductCard";
 import { useNavigate } from "react-router-dom";
-import agricultureProducts from "../../data/agricultureProducts";
+import agricultureProducts from "../../data/agricultureProducts.jsx";
 
 const RecommendedProducts = ({ currentProductId, category }) => {
   const theme = useTheme();

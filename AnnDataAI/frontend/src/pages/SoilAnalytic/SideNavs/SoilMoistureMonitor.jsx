@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ibmGraniteService from "../../../services/ibmGraniteService";
+import ibmGraniteService from "../../../services/ibmGraniteService.js";
 
 const SoilMoistureMonitor = () => {
   // Soil Moisture Monitoring States

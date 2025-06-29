@@ -30,10 +30,10 @@ import ShareIcon from "@mui/icons-material/Share";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import EmojiNatureIcon from "@mui/icons-material/EmojiNature";
-import agricultureProducts from "../../data/agricultureProducts";
-import { useCart } from "../../context/CartContext";
-import RecommendedProducts from "../../components/shop/RecommendedProducts";
-import { getProductImageUrl } from "../../utils/imageUtils";
+import agricultureProducts from "../../data/agricultureProducts.jsx";
+import { useCart } from "../../context/CartContext.jsx";
+import RecommendedProducts from "../../components/shop/RecommendedProducts.jsx";
+import { getProductImageUrl } from "../../utils/imageUtils.js";
 
 const ProductDetailPage = () => {
   const { productId } = useParams();

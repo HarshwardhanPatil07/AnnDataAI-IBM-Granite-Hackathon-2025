@@ -22,14 +22,14 @@ import {
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { getUserOrders, cancelOrder } from "../../services/orderService";
+import { getUserOrders, cancelOrder } from "../../services/orderService.js";
 import {
   initializeSocket,
   joinUserOrdersRoom,
   onUserEvent,
   cleanupUserListeners,
-} from "../../services/socketService";
-import useAuthStore from "../../store/useAuthStore";
+} from "../../services/socketService.js";
+import useAuthStore from "../../store/useAuthStore.js";
 
 const OrdersPage = () => {
   const navigate = useNavigate();

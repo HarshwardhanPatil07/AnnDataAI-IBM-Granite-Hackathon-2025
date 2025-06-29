@@ -6,7 +6,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import CardData from "../../data/featuresCardData";
+import CardData from "../../data/featuresCardData.js";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

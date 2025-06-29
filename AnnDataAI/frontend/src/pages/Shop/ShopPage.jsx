@@ -27,10 +27,10 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import ProductCard from "../../components/shop/ProductCard";
-import agricultureProducts from "../../data/agricultureProducts";
-import { useCart } from "../../context/CartContext";
-import AmazonProductsSection from "../../components/shop/AmazonProductsSection";
+import ProductCard from "../../components/shop/ProductCard.jsx";
+import agricultureProducts from "../../data/agricultureProducts.jsx";
+import { useCart } from "../../context/CartContext.jsx";
+import AmazonProductsSection from "../../components/shop/AmazonProductsSection.jsx";
 
 const categories = [
   { id: "all", label: "All Products" },

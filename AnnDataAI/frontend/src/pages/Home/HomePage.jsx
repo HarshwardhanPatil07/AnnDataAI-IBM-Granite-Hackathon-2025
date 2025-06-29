@@ -12,8 +12,8 @@ import Features from "./Features";
 import OptimalCropSeasonCardContainer from "./OptimalCropSeasonCardContainer";
 import GeospatialAnalysis from "./GeoSpatialAnalysis";
 import { useTranslation } from "react-i18next";
-import useTokenStore from "../../store/useTokenStore";
-import ibmGraniteService from "../../services/ibmGraniteService";
+import useTokenStore from "../../store/useTokenStore.js";
+import ibmGraniteService from "../../services/ibmGraniteService.js";
 
 const HomePage = () => {
 	const { t } = useTranslation();

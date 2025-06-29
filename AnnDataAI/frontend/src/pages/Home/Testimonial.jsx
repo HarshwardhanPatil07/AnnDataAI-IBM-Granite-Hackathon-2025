@@ -5,7 +5,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import { useEffect, useRef } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import { testimonials } from "../../data/testimonials";
+import { testimonials } from "../../data/testimonials.js";
 import { useTranslation } from "react-i18next";
 
 export default function Testimonial() {

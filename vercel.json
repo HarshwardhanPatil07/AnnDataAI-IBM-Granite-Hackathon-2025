@@ -18,10 +18,5 @@
       "src": "/(.*)",
       "dest": "/AnnDataAI/frontend/dist/$1"
     }
-  ],
-  "functions": {
-    "AnnDataAI/backend/api/index.ts": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

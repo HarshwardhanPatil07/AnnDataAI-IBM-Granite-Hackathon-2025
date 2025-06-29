@@ -10,6 +10,7 @@ import { WiDayCloudy } from "react-icons/wi";
 import { FaDrawPolygon } from "react-icons/fa";
 import { MdSecurity } from "react-icons/md";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { GiWaterDrop } from "react-icons/gi";
 
 export default function SideBar({
 	setActiveComponent,
@@ -82,6 +83,23 @@ export default function SideBar({
 					</ListItemPrefix>
 					<span className="text-blue-gray-900 dark:text-gray-300">
 						Soil Report Helper
+					</span>
+				</ListItem>
+
+				<ListItem
+					className={`hover:bg-blue-gray-100 dark:hover:bg-gray-700 ${
+						activeItem === "SoilMoistureMonitor" ? "bg-blue-100 dark:bg-gray-700" : ""
+					}`}
+					onClick={() => {
+						setActiveComponent("SoilMoistureMonitor");
+						setActiveItem("SoilMoistureMonitor");
+					}}
+				>
+					<ListItemPrefix>
+						<GiWaterDrop className="h-5 w-5 text-blue-500 dark:text-blue-300" />
+					</ListItemPrefix>
+					<span className="text-blue-gray-900 dark:text-gray-300">
+						Soil Moisture Monitor
 					</span>
 				</ListItem>
 			</List>

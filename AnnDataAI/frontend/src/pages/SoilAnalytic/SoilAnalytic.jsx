@@ -5,6 +5,7 @@ import SideBar from "./Sidebar";
 import SoilReport from "./SideNavs/SoilReport";
 import UserSoilReport from "./SideNavs/UserSoilReport";
 import SoilReportHelper from "./SideNavs/SoilReportHelper";
+import SoilMoistureMonitor from "./SideNavs/SoilMoistureMonitor";
 
 const SoilAnalytic = () => {
 	// State to track the currently selected component
@@ -21,6 +22,8 @@ const SoilAnalytic = () => {
 				return <UserSoilReport />;
 			case "SoilReportHelper":
 				return <SoilReportHelper />;
+			case "SoilMoistureMonitor":
+				return <SoilMoistureMonitor />;
 			default:
 				return <SoilReport />;
 		}

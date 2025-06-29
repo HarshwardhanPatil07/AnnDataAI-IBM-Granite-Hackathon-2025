@@ -11,6 +11,9 @@ import {
   getIrrigationRequirement,
   analyzeSoilReport,
   getCropSwappingStrategy,
+  getLoanRecommendation,
+  getGovernmentSchemes,
+  getFarmerEducation,
   healthCheck
 } from "../controllers/aiController";
 
@@ -48,6 +51,15 @@ router.post("/analyze-soil-report", analyzeSoilReport);
 
 // Crop swapping strategy endpoint
 router.post("/crop-swapping-strategy", getCropSwappingStrategy);
+
+// Loan recommendation endpoint
+router.post("/loan-recommendation", getLoanRecommendation);
+
+// Government schemes recommendation endpoint
+router.post("/government-schemes", getGovernmentSchemes);
+
+// Farmer education endpoint
+router.post("/farmer-education", getFarmerEducation);
 
 // Health check endpoint
 router.get("/health", healthCheck);

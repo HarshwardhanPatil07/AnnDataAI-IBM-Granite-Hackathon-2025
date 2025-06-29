@@ -102,6 +102,23 @@ class IBMGraniteService {
   async getOptimalCropSeason(seasonData) {
     return this.makeRequest('/optimal-crop-season', seasonData);
   }
+
+  // Financial Support Features using IBM Granite AI
+  
+  // AI-Powered Government Schemes Recommendation
+  async getGovernmentSchemes(farmerData) {
+    return this.makeRequest('/government-schemes', farmerData);
+  }
+
+  // AI-Powered Loan Recommendation System
+  async getLoanRecommendation(loanData) {
+    return this.makeRequest('/loan-recommendation', loanData);
+  }
+
+  // AI-Powered Farmer Education Content Generator
+  async getFarmerEducation(educationData) {
+    return this.makeRequest('/farmer-education', educationData);
+  }
 }
 
 export default new IBMGraniteService();

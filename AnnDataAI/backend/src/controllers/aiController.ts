@@ -1022,4 +1022,240 @@ function extractCarbonReduction(text: string): string | null {
   return match ? match[0].trim() : null;
 }
 
+// @desc    Get loan recommendations using IBM Granite AI via Watson Cloud
+// @route   POST /api/ai/loan-recommendation
+// @access  Public
+export const getLoanRecommendation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { 
+      farmSize, 
+      income, 
+      creditScore, 
+      loanPurpose, 
+      collateral, 
+      farmingExperience,
+      cropType,
+      location 
+    } = req.body;
+
+    // Validate required fields
+    if (!farmSize || !income || !loanPurpose) {
+      throw new CustomError("Farm size, income, and loan purpose are required", 400);
+    }
+
+    // Create a comprehensive prompt for loan recommendation
+    const prompt = `As an agricultural finance expert, analyze the following farmer profile and provide detailed loan recommendations:
+
+Farmer Profile:
+- Farm Size: ${farmSize} acres
+- Annual Income: $${income}
+- Credit Score: ${creditScore || 'Not provided'}
+- Loan Purpose: ${loanPurpose}
+- Collateral: ${collateral || 'Not specified'}
+- Farming Experience: ${farmingExperience || 'Not specified'} years
+- Primary Crop: ${cropType || 'Mixed farming'}
+- Location: ${location || 'Not specified'}
+
+Please provide:
+1. Loan Amount Recommendation (with justification)
+2. Interest Rate Range
+3. Repayment Terms
+4. Risk Assessment
+5. Required Documentation
+6. Alternative Financing Options
+7. Specific Lender Suggestions
+
+Format the response as a structured recommendation.`;
+
+    const response = await watsonService.generateText(prompt);
+
+    res.status(200).json({
+      success: true,
+      message: "Loan recommendations generated successfully using IBM Granite AI",
+      data: {
+        recommendations: response,
+        farmerProfile: {
+          farmSize,
+          income,
+          creditScore,
+          loanPurpose,
+          collateral,
+          farmingExperience,
+          cropType,
+          location
+        }
+      },
+      timestamp: new Date().toISOString(),
+      model_info: {
+        service: "IBM Watson Cloud",
+        model_family: "IBM Granite",
+        source: "watsonx.ai"
+      }
+    });
+
+  } catch (error: any) {
+    console.error("Error in loan recommendation:", error);
+    next(new CustomError(error.message || "Failed to generate loan recommendations", 500));
+  }
+};
+
+// @desc    Get government schemes recommendations using IBM Granite AI via Watson Cloud
+// @route   POST /api/ai/government-schemes
+// @access  Public
+export const getGovernmentSchemes = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { 
+      farmSize, 
+      cropType, 
+      location, 
+      farmerCategory, 
+      income,
+      age,
+      equipment 
+    } = req.body;
+
+    // Validate required fields
+    if (!location || !farmSize) {
+      throw new CustomError("Location and farm size are required", 400);
+    }
+
+    // Create a comprehensive prompt for government schemes
+    const prompt = `As an agricultural policy expert, analyze the following farmer profile and recommend relevant government schemes and subsidies:
+
+Farmer Profile:
+- Farm Size: ${farmSize} acres
+- Primary Crop: ${cropType || 'Mixed farming'}
+- Location: ${location}
+- Farmer Category: ${farmerCategory || 'General'}
+- Annual Income: ${income ? '$' + income : 'Not specified'}
+- Age: ${age || 'Not specified'}
+- Current Equipment: ${equipment || 'Basic farming tools'}
+
+Please provide:
+1. Central Government Schemes (with eligibility criteria)
+2. State-specific Programs
+3. Subsidies Available
+4. Equipment Purchase Schemes
+5. Crop Insurance Options
+6. Training and Development Programs
+7. Application Process and Documentation
+8. Deadlines and Important Dates
+
+Format the response with clear scheme names, benefits, and eligibility requirements.`;
+
+    const response = await watsonService.generateText(prompt);
+
+    res.status(200).json({
+      success: true,
+      message: "Government schemes recommendations generated successfully using IBM Granite AI",
+      data: {
+        schemes: response,
+        farmerProfile: {
+          farmSize,
+          cropType,
+          location,
+          farmerCategory,
+          income,
+          age,
+          equipment
+        }
+      },
+      timestamp: new Date().toISOString(),
+      model_info: {
+        service: "IBM Watson Cloud",
+        model_family: "IBM Granite",
+        source: "watsonx.ai"
+      }
+    });
+
+  } catch (error: any) {
+    console.error("Error in government schemes recommendation:", error);
+    next(new CustomError(error.message || "Failed to generate government schemes recommendations", 500));
+  }
+};
+
+// @desc    Get farmer education content using IBM Granite AI via Watson Cloud
+// @route   POST /api/ai/farmer-education
+// @access  Public
+export const getFarmerEducation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { 
+      topic, 
+      experienceLevel, 
+      cropType, 
+      farmSize, 
+      region,
+      language,
+      learningGoals 
+    } = req.body;
+
+    // Default topic if not provided
+    const educationTopic = topic || 'sustainable farming practices';
+
+    // Create a comprehensive prompt for farmer education
+    const prompt = `As an agricultural education expert, create a comprehensive learning program for farmers on "${educationTopic}":
+
+Learning Context:
+- Experience Level: ${experienceLevel || 'Beginner to Intermediate'}
+- Primary Crop: ${cropType || 'Mixed farming'}
+- Farm Size: ${farmSize || 'Small to medium scale'}
+- Region: ${region || 'General'}
+- Preferred Language: ${language || 'English'}
+- Learning Goals: ${learningGoals || 'Improve farming practices and productivity'}
+
+Please provide:
+1. Learning Path Overview
+2. Key Topics and Modules
+3. Best Practices and Techniques
+4. Common Mistakes to Avoid
+5. Practical Implementation Steps
+6. Resource Recommendations (books, videos, courses)
+7. Expert Tips and Insights
+8. Success Stories and Case Studies
+
+Format the response as a structured educational program with clear learning objectives.`;
+
+    const response = await watsonService.generateText(prompt);
+
+    res.status(200).json({
+      success: true,
+      message: "Farmer education content generated successfully using IBM Granite AI",
+      data: {
+        educationContent: response,
+        learningContext: {
+          topic: educationTopic,
+          experienceLevel,
+          cropType,
+          farmSize,
+          region,
+          language,
+          learningGoals
+        }
+      },
+      timestamp: new Date().toISOString(),
+      model_info: {
+        service: "IBM Watson Cloud",
+        model_family: "IBM Granite",
+        source: "watsonx.ai"
+      }
+    });
+
+  } catch (error: any) {
+    console.error("Error in farmer education generation:", error);
+    next(new CustomError(error.message || "Failed to generate farmer education content", 500));
+  }
+};
+
 export {};

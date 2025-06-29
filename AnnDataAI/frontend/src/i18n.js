@@ -9,11 +9,11 @@ const resources = {
       // FAQ translations
       "faqheading": "Frequently Asked Questions",
       "faq.question1": "What is AnnDataAI – the Advanced Agricultural Intelligence Platform?",
-      "faq.answer1": "AnnDataAI is an innovative AI-powered platform that provides real-time, data-driven insights to help farmers optimize crop management, predict agricultural trends, and improve overall farm productivity through advanced analytics.",
+      "faq.answer1": "AnnDataAI is an innovative IBM Granite AI-powered platform that provides real-time, data-driven insights to help farmers optimize crop management, predict agricultural trends, and improve overall farm productivity through advanced analytics.",
       "faq.question2": "How does AnnDataAI work?",
-      "faq.answer2": "It integrates data from soil sensors, weather forecasts, satellite imagery, and historical crop records with advanced machine learning models to deliver actionable recommendations tailored to your farm's specific needs.",
+      "faq.answer2": "It integrates data from soil sensors, weather forecasts, satellite imagery, and historical crop records with IBM Granite AI machine learning models to deliver actionable recommendations tailored to your farm's specific needs.",
       "faq.question3": "What technologies power AnnDataAI?",
-      "faq.answer3": "AnnDataAI leverages IoT sensors, cloud computing, artificial intelligence, machine learning, and advanced data analytics to continuously monitor environmental conditions and analyze agricultural patterns for precise decision support.",
+      "faq.answer3": "AnnDataAI leverages IBM Granite AI, IoT sensors, cloud computing, artificial intelligence, machine learning, and advanced data analytics to continuously monitor environmental conditions and analyze agricultural patterns for precise decision support.",
       "faq.question4": "How accurate are the system's predictions?",
       "faq.answer4": "Our system is designed to achieve over 90% accuracy in agricultural predictions and recommendations. It continuously improves through machine learning and ongoing data integration, ensuring reliable insights over time.",
       "faq.question5": "What challenges does AnnDataAI address?",
@@ -59,7 +59,7 @@ const resources = {
 
        // HomePage texts
        "homepage.title": "AnnDataAI",
-       "homepage.description": "Leverage our advanced AI-powered agricultural intelligence platform to enhance your farming practices. Our comprehensive data analytics provide personalized crop insights, soil analysis, market predictions, and data-driven recommendations to optimize agricultural productivity.",
+       "homepage.description": "Leverage our advanced IBM Granite AI-powered agricultural intelligence platform to enhance your farming practices. Our comprehensive data analytics provide personalized crop insights, soil analysis, market predictions, and data-driven recommendations to optimize agricultural productivity.",
        "homepage.getStarted": "Get Started",
        "homepage.viewMore": "View More",
 
@@ -110,26 +110,26 @@ const resources = {
 
        // Features Section
 "featureheading": "Our Features",
-"featuredescription": "Discover how our AI-driven solutions empower farmers with data-driven insights, optimized crop management, and sustainable farming practices.",
+"featuredescription": "Discover how our IBM Granite AI-driven solutions empower farmers with data-driven insights, optimized crop management, and sustainable farming practices.",
 
-"feature1title": "Crop Recommendation",
-"feature1description": "Receive AI-powered recommendations for the best crops to grow based on soil conditions, weather, and location-specific data.",
+"feature1title": "IBM Granite AI Crop Recommendation",
+"feature1description": "Receive IBM Granite AI-powered recommendations for the best crops to grow based on soil conditions, weather, and location-specific data.",
 
 "feature2title": "PestPedia – Smart Pest Management",
-"feature2description": "Identify pests, understand their impact on crops, and access eco-friendly solutions to mitigate infestations effectively.",
+"feature2description": "Identify pests with IBM Granite AI, understand their impact on crops, and access eco-friendly solutions to mitigate infestations effectively.",
 
 "feature3title": "Crop Swapping & Optimization",
-"feature3description": "Optimize crop selection by predicting yield and production based on real-time weather updates and market trends.",
+"feature3description": "Optimize crop selection using IBM Granite AI by predicting yield and production based on real-time weather updates and market trends.",
 
 "feature4title": "Crop Market Trend Analyzer",
-"feature4description": "Analyze market prices for crops and vegetables, providing valuable insights to maximize farmer profits and enhance sustainability.",
+"feature4description": "Analyze market prices for crops with IBM Granite AI insights, providing valuable data to maximize farmer profits and enhance sustainability.",
        "mapCardheading": "Why AI-Driven Farming Matters?",
 "mapCarddescription1": "Enhance crop productivity with real-time monitoring of soil conditions and weather patterns.",
 "mapCarddescription2": "Utilize AI-powered insights to make data-driven decisions for efficient resource management.",
 "mapCarddescription3": "Automate irrigation, pest control, and fertilization using smart sensors and cloud-based control systems.",
         // Optimal Crop Season Card Section
-        "optimalCropSeasonCardheading": "Optimal Crop Season Predictor",
-        "optimalCropSeasonCarddescription": "The Optimal Cropping Season Predictor is an intelligent tool designed to help users determine the ideal season for growing specific crops. It analyzes a variety of factors, including croppingyear, crop type, and state, to provide accurate recommendations,ensuring farmers achieve the best yield with minimal water and resource usage.",
+        "optimalCropSeasonCardheading": "IBM Granite AI Crop Season Predictor",
+        "optimalCropSeasonCarddescription": "The IBM Granite AI Optimal Cropping Season Predictor is an intelligent tool designed to help users determine the ideal season for growing specific crops. It analyzes a variety of factors, including cropping year, crop type, and state, to provide accurate recommendations, ensuring farmers achieve the best yield with minimal water and resource usage.",
         "optimalCropSeasonCardbutton":" Find Optimal Cropping Season",
 
         // GeoSpatial Analysis Card Section

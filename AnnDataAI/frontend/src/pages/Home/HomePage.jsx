@@ -410,27 +410,27 @@ const HomePage = () => {
 							{/* Badge */}
 							<div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 dark:from-blue-900 dark:to-indigo-900 dark:text-blue-200 mb-6 border border-blue-200 dark:border-blue-800">
 								<span className="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mr-3 animate-pulse"></span>
-								<span className="font-semibold">Powered by IBM Granite AI</span>
+								<span className="font-semibold">{t("hero.badge")}</span>
 							</div>
 
 							{/* Main Heading - Action-Focused */}
 							<h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 dark:from-white dark:via-blue-100 dark:to-purple-100 bg-clip-text text-transparent leading-tight mb-6">
-								Transform Your Farm with IBM Granite AI
+								{t("hero.mainTitle")}
 							</h1>
 
 							{/* Subheading - Impact-Oriented */}
 							<div className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed space-y-3">
 								<div className="flex items-center justify-center lg:justify-start">
 									<span className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></span>
-									<span><strong>Increase yields by 35%</strong> with AI-powered crop recommendations</span>
+									<span><strong>{t("hero.benefit1")}</strong> {t("hero.benefit1sub")}</span>
 								</div>
 								<div className="flex items-center justify-center lg:justify-start">
 									<span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-									<span><strong>Save ₹2+ lakhs annually</strong> through optimized resource management</span>
+									<span><strong>{t("hero.benefit2")}</strong> {t("hero.benefit2sub")}</span>
 								</div>
 								<div className="flex items-center justify-center lg:justify-start">
 									<span className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>
-									<span><strong>Access 15+ AI tools</strong> for complete farm intelligence</span>
+									<span><strong>{t("hero.benefit3")}</strong> {t("hero.benefit3sub")}</span>
 								</div>
 							</div>
 
@@ -444,7 +444,7 @@ const HomePage = () => {
 											className="group relative px-8 py-4 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-300 overflow-hidden"
 										>
 											<span className="relative z-10 flex items-center justify-center">
-												Start Analyzing
+												{t("hero.startAnalyzing")}
 												<svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
 												</svg>
@@ -456,7 +456,7 @@ const HomePage = () => {
 											onClick={handleViewMore}
 											className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 backdrop-blur-sm bg-white/50 dark:bg-gray-800/50"
 										>
-											Visit Shop
+											{t("hero.visitShop")}
 										</button>
 									</>
 								) : (
@@ -467,7 +467,7 @@ const HomePage = () => {
 											className="group relative px-8 py-4 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-300 overflow-hidden"
 										>
 											<span className="relative z-10 flex items-center justify-center">
-												Sign In to Start
+												{t("hero.signInToStart")}
 												<svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
 												</svg>
@@ -479,7 +479,7 @@ const HomePage = () => {
 											onClick={handleSignUp}
 											className="px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 backdrop-blur-sm bg-white/50 dark:bg-gray-800/50"
 										>
-											Create Account
+											{t("hero.createAccount")}
 										</button>
 									</>
 								)}
@@ -488,7 +488,7 @@ const HomePage = () => {
 							{!token && (
 								<div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
 									<p className="text-sm text-blue-800 dark:text-blue-200 text-center">
-										<span className="font-semibold">🔒 Sign in required:</span> Access advanced IBM Granite AI agricultural analysis tools and features
+										<span className="font-semibold">{t("hero.signInRequired")}</span> {t("hero.signInMessage")}
 									</p>
 								</div>
 							)}
@@ -497,15 +497,15 @@ const HomePage = () => {
 							<div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
 								<div className="text-center">
 									<div className="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400">+35%</div>
-									<div className="text-sm text-gray-600 dark:text-gray-400">Crop Yield Increase</div>
+									<div className="text-sm text-gray-600 dark:text-gray-400">{t("hero.yieldIncrease")}</div>
 								</div>
 								<div className="text-center">
 									<div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400">15+</div>
-									<div className="text-sm text-gray-600 dark:text-gray-400">AI Analysis Tools</div>
+									<div className="text-sm text-gray-600 dark:text-gray-400">{t("hero.aiTools")}</div>
 								</div>
 								<div className="text-center">
 									<div className="text-2xl md:text-3xl font-bold text-indigo-600 dark:text-indigo-400">₹2L+</div>
-									<div className="text-sm text-gray-600 dark:text-gray-400">Annual Savings</div>
+									<div className="text-sm text-gray-600 dark:text-gray-400">{t("hero.annualSavings")}</div>
 								</div>
 							</div>
 						</div>
@@ -539,10 +539,10 @@ const HomePage = () => {
 						{/* Section Header */}
 						<div className="text-center mb-16" data-aos="fade-up">
 							<h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
-								Financial Support for Farmers
+								{t("financial.title")}
 							</h2>
 							<p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-								Access government schemes, smart loan recommendations, and educational resources to grow your farming business
+								{t("financial.description")}
 							</p>
 						</div>
 
@@ -558,7 +558,7 @@ const HomePage = () => {
 												: 'text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400'
 										}`}
 									>
-										Government Schemes
+										{t("financial.govSchemes")}
 									</button>
 									<button
 										onClick={() => setActiveFinancialTab('loans')}
@@ -568,7 +568,7 @@ const HomePage = () => {
 												: 'text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
 										}`}
 									>
-										Smart Loan Finder
+										{t("financial.smartLoan")}
 									</button>
 									<button
 										onClick={() => setActiveFinancialTab('education')}
@@ -578,7 +578,7 @@ const HomePage = () => {
 												: 'text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400'
 										}`}
 									>
-										Farmer Education
+										{t("financial.education")}
 									</button>
 								</div>
 							</div>
@@ -594,8 +594,8 @@ const HomePage = () => {
 										</svg>
 									</div>
 									<div className="flex-1">
-										<h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Government Schemes</h3>
-										<p className="text-gray-600 dark:text-gray-300">Find government schemes tailored to your farming needs</p>
+										<h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t("financial.schemesTitle")}</h3>
+										<p className="text-gray-600 dark:text-gray-300">{t("financial.schemesDescription")}</p>
 									</div>
 									<button
 										onClick={() => fetchAIGovernmentSchemes()}
@@ -605,14 +605,14 @@ const HomePage = () => {
 										{loadingAI.schemes ? (
 											<>
 												<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block mr-2"></div>
-												Analyzing...
+												{t("financial.loading")}
 											</>
 										) : (
 											<>
 												<svg className="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
 												</svg>
-												Get AI Recommendations
+												{t("financial.getAIRecommendations")}
 											</>
 										)}
 									</button>
@@ -725,8 +725,8 @@ const HomePage = () => {
 										</svg>
 									</div>
 									<div>
-										<h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Farmer Loan Lending Recommendation System</h3>
-										<p className="text-gray-600 dark:text-gray-300">Find the perfect loan scheme for your agricultural needs</p>
+										<h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t("financial.loanTitle")}</h3>
+										<p className="text-gray-600 dark:text-gray-300">{t("financial.loanDescription")}</p>
 									</div>
 								</div>
 
@@ -734,14 +734,14 @@ const HomePage = () => {
 									<div className="grid md:grid-cols-2 gap-8">
 										{/* Loan Form */}
 										<div>
-											<h4 className="text-xl font-bold text-gray-800 dark:text-white mb-6">Share Your Details</h4>
+											<h4 className="text-xl font-bold text-gray-800 dark:text-white mb-6">{t("financial.shareDetails")}</h4>
 											<div className="space-y-4">
 												<div className="grid grid-cols-2 gap-4">
 													<div>
-														<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Age</label>
+														<label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t("financial.age")}</label>
 														<input
 															type="number"
-															placeholder="Enter your age"
+															placeholder={t("financial.enterAge")}
 															value={loanFormData.age}
 															onChange={(e) => handleLoanFormChange('age', e.target.value)}
 															className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"

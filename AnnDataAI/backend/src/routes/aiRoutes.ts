@@ -10,6 +10,7 @@ import {
   getGeospatialAnalysis,
   getIrrigationRequirement,
   analyzeSoilReport,
+  getCropSwappingStrategy,
   healthCheck
 } from "../controllers/aiController";
 
@@ -44,6 +45,9 @@ router.post("/irrigation-requirement", getIrrigationRequirement);
 
 // Soil report analysis endpoint
 router.post("/analyze-soil-report", analyzeSoilReport);
+
+// Crop swapping strategy endpoint
+router.post("/crop-swapping-strategy", getCropSwappingStrategy);
 
 // Health check endpoint
 router.get("/health", healthCheck);

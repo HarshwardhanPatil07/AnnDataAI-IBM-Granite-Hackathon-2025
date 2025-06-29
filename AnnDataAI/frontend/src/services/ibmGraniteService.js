@@ -92,6 +92,11 @@ class IBMGraniteService {
   async getIrrigationRequirement(irrigationData) {
     return this.makeRequest('/irrigation-requirement', irrigationData);
   }
+
+  // Crop Swapping Strategy using IBM Granite AI
+  async getCropSwappingStrategy(swappingData) {
+    return this.makeRequest('/crop-swapping-strategy', swappingData);
+  }
 }
 
 export default new IBMGraniteService();

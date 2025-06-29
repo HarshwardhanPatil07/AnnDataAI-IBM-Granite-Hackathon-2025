@@ -11,6 +11,9 @@
 **/.env
 **/config.json
 
+# Vercel
+.vercel
+
 # Node.js Dependencies
 node_modules/
 npm-debug.log*

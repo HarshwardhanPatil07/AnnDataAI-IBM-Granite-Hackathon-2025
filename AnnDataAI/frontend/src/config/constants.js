@@ -3,7 +3,7 @@ export const API_URL =
   import.meta.env.VITE_BACKEND_URL ||
   (window.location.hostname === "localhost"
     ? "http://localhost:3600/api"
-    : "https://your-production-api.com/api");
+    : "/api");
 
 // Make sure the API URL has the proper format
 export const getApiUrl = () => {

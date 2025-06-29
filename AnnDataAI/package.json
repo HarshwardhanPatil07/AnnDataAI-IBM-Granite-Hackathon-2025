@@ -1,0 +1,20 @@
+{
+  "name": "anndataai-fullstack",
+  "version": "1.0.0",
+  "description": "AnnDataAI - Full Stack Agricultural AI Platform",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "keywords": [
+    "agriculture",
+    "ai",
+    "ibm-granite",
+    "react",
+    "nodejs"
+  ],
+  "author": "Kunal Kharat",
+  "license": "ISC"
+}

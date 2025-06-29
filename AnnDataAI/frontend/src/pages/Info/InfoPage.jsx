@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import sections from "../../data/info.js";
+import sections from "../../data/info";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 

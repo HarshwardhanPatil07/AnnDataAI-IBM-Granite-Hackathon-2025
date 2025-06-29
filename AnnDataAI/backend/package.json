@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon --exec ts-node server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "db:users": "ts-node src/get-users-from-db.ts",
+    "db:users:js": "node get-users-from-db.js"
   },
   "keywords": [
     "data-analysis",

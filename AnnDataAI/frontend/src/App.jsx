@@ -51,9 +51,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout />,
     children: [
+      { index: true, element: <HomePage /> },
       { path: "home", element: <HomePage /> },
       { 
-        path: "/plant-disease-detector", 
+        path: "plant-disease-detector", 
         element: (
           <ProtectedRoute>
             <DiseasePage />
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
         )
       },
       { 
-        path: "/weather-and-geofencing", 
+        path: "weather-and-geofencing", 
         element: (
           <ProtectedRoute>
             <WeatherGeoFencing />
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
         )
       },
       { 
-        path: "/soil-analytic", 
+        path: "soil-analytic", 
         element: (
           <ProtectedRoute>
             <SoilAnalytic />
@@ -77,7 +78,7 @@ const router = createBrowserRouter([
         )
       },
       { 
-        path: "/fertilizer-irrigation", 
+        path: "fertilizer-irrigation", 
         element: (
           <ProtectedRoute>
             <FertilizersPage />
@@ -111,7 +112,6 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         )
       },
-      { path: "/", element: <HomePage />, index: true },
       {
         path: "fertilizerRecommendation",
         element: (

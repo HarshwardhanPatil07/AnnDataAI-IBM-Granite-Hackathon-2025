@@ -439,3 +439,4 @@ IBM_GRANITE_INTEGRATION_COMPLETE.md
 # Test files
 test-*.js
 *-test.js
+.vercel

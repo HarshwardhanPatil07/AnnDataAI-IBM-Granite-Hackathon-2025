@@ -9,6 +9,10 @@ const ProtectedRoute = ({ children, requireAuth = true }) => {
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
 
+  // 🚨 TEMPORARY: Authentication disabled for development/testing
+  // Set this to false to re-enable authentication
+  const DISABLE_AUTH = true;
+
   useEffect(() => {
     // Simulate a small delay to check authentication status
     const timer = setTimeout(() => {
@@ -37,6 +41,16 @@ const ProtectedRoute = ({ children, requireAuth = true }) => {
         </Typography>
       </Box>
     );
+  }
+
+  // 🚨 TEMPORARY: Skip all authentication checks when disabled
+  if (DISABLE_AUTH) {
+    console.log("🚨 Authentication is temporarily disabled");
+    // Still handle auth page redirects for logged-in users
+    if (!requireAuth && token && (location.pathname.includes("/auth/"))) {
+      return <Navigate to="/" replace />;
+    }
+    return children;
   }
 
   // If authentication is required but user is not authenticated

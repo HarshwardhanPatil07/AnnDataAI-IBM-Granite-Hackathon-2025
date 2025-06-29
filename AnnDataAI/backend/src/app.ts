@@ -19,7 +19,12 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:3000",
-      "https://your-production-frontend.com",
+      "http://localhost:3001",
+      "https://localhost:3000",
+      // Add your Vercel domain here when you get it
+      // "https://your-app-name.vercel.app",
+      // For now, allow all origins (⚠️ not secure for production)
+      "*"
     ],
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS"],
     credentials: true,

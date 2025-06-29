@@ -1,27 +1,25 @@
 {
   "version": 2,
-  "installCommand": "npm install && cd AnnDataAI/frontend && npm install && cd ../backend && npm install",
-  "buildCommand": "cd AnnDataAI/frontend && npm run build",
-  "outputDirectory": "AnnDataAI/frontend/dist",
+  "installCommand": "npm install && cd frontend && npm install && cd ../backend && npm install",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
   "builds": [
     {
-      "src": "AnnDataAI/backend/api/index.ts",
-      "use": "@vercel/node"
+      "src": "backend/api/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "maxDuration": 30
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/AnnDataAI/backend/api/index.ts"
+      "dest": "/backend/api/index.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/AnnDataAI/frontend/dist/$1"
+      "dest": "/frontend/dist/$1"
     }
-  ],
-  "functions": {
-    "AnnDataAI/backend/api/index.ts": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

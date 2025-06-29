@@ -18,6 +18,21 @@ export const authenticate = async (
   res: Response,
   next: NextFunction
 ) => {
+  // 🚨 TEMPORARY: Authentication disabled for development/testing
+  // Set this to false to re-enable authentication
+  const DISABLE_AUTH = true;
+
+  if (DISABLE_AUTH) {
+    console.log("🚨 Backend authentication is temporarily disabled");
+    // Set a default user object for compatibility
+    req.user = {
+      id: "temp-user-id",
+      email: "temp@example.com",
+      role: "farmer"
+    };
+    return next();
+  }
+
   let token;
 
   // Check if token exists in headers

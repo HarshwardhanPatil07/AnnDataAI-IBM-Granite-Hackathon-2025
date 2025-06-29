@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "installCommand": "npm install && cd AnnDataAI/frontend && npm install && cd ../backend && npm install",
-  "buildCommand": "cd AnnDataAI/frontend && npm run build",
-  "outputDirectory": "AnnDataAI/frontend/dist",
   "builds": [
     {
-      "src": "AnnDataAI/backend/api/index.ts",
+      "src": "AnnDataAI/frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "AnnDataAI/backend/api/*.ts",
       "use": "@vercel/node"
     }
   ],

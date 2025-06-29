@@ -9,7 +9,7 @@
       }
     },
     {
-      "src": "AnnDataAI/backend/api/*.ts",
+      "src": "AnnDataAI/backend/api/index.ts",
       "use": "@vercel/node"
     }
   ],
@@ -19,8 +19,12 @@
       "dest": "/AnnDataAI/backend/api/index.ts"
     },
     {
-      "src": "/(.*)",
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
       "dest": "/AnnDataAI/frontend/dist/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/AnnDataAI/frontend/dist/index.html"
     }
   ]
 }

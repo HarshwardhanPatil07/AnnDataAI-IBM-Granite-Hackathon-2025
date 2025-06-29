@@ -26,6 +26,19 @@
 
 ---
 
+
+## 🌐 LIVE FRONTEND DEMO
+
+You can access the **frontend-only hosted version** of AnnDataAI here:
+
+🔗 **[Frontend Live Link](https://frontend-one-omega-16.vercel.app/)**  
+
+> **Note:**  
+This is **only the frontend UI** deployed on Vercel — no backend services are connected.  
+To experience full AI functionality, you’ll need to **run the Frontend and Backend locally** as detailed.
+
+---
+
 ## 🚀 IMPACT DELIVERED
 
 ### **Business Impact Achieved**
@@ -245,17 +258,6 @@ npm run dev  # Port 5173
 ### **Video Demonstrations**
 - **🎥 Full Platform Demo:** [https://youtu.be/WJo2y8v2pMc](https://youtu.be/WJo2y8v2pMc)
 
-## 🌐 LIVE FRONTEND DEMO
-
-You can access the **frontend-only hosted version** of AnnDataAI here:
-
-🔗 **[Frontend Live Link](https://frontend-one-omega-16.vercel.app/)**  
-
-> **Note:**  
-This is **only the frontend UI** deployed on Vercel — no backend services are connected.  
-To experience full AI functionality, you’ll need to **run the Frontend and Backend locally** as detailed.
-
----
 
 ## COMPETITIVE ADVANTAGES
 

@@ -430,7 +430,7 @@ const HomePage = () => {
 								</div>
 								<div className="flex items-center justify-center lg:justify-start">
 									<span className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>
-									<span><strong>Access 8+ AI tools</strong> for complete farm intelligence</span>
+									<span><strong>Access 15+ AI tools</strong> for complete farm intelligence</span>
 								</div>
 							</div>
 
@@ -500,7 +500,7 @@ const HomePage = () => {
 									<div className="text-sm text-gray-600 dark:text-gray-400">Crop Yield Increase</div>
 								</div>
 								<div className="text-center">
-									<div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400">8+</div>
+									<div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400">15+</div>
 									<div className="text-sm text-gray-600 dark:text-gray-400">AI Analysis Tools</div>
 								</div>
 								<div className="text-center">

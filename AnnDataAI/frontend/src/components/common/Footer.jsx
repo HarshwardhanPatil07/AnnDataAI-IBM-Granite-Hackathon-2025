@@ -65,7 +65,7 @@ const Footer2 = () => {
 				</div>
 				<hr className="my-6 border-gray-700" />
 				<span className="block text-sm text-white text-center text-white-light">
-					© 2024 <a href="#" className="hover:underline text-white-light">SmartIrrigation™</a>. All Rights Reserved.
+					© 2025 <a href="#" className="hover:underline text-white-light">AnnDataAI™</a>. All Rights Reserved.
 				</span>
 			</div>
 		</footer>

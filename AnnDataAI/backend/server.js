@@ -925,7 +925,7 @@ function extractSustainabilityMetrics(response) {
   return {
     soilHealth: extractSoilImpact(response) || 'Improved through crop rotation and organic matter',
     waterUsage: extractWaterEfficiency(response) || '20-30% reduction through efficient crop selection',
-    carbonFootprint: extractCarbonImpact(response) || 'Reduced through sustainable farming practices'
+    carbonImpact: extractCarbonImpact(response) || 'Reduced through sustainable farming practices'
   };
 }
 
@@ -1019,6 +1019,375 @@ function extractWaterEfficiency(response) {
 function extractCarbonImpact(response) {
   const match = response.match(/carbon[\sS]*?(?:footprint|reduction)[\s\S]*?(?=\n\n|\d\.)/i);
   return match ? match[0].trim() : null;
+}
+
+// Optimal Crop Season Prediction using IBM Granite AI
+app.post("/api/ai/optimal-crop-season", async (req, res) => {
+  try {
+    const { 
+      cropType, 
+      region, 
+      soilType, 
+      farmSize, 
+      currentYear,
+      waterAvailability,
+      climateConditions,
+      farmingExperience,
+      budgetRange,
+      sustainabilityPreference
+    } = req.body;
+
+    if (!cropType || !region) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Crop type and region are required" 
+      });
+    }
+
+    // Create comprehensive prompt for IBM Granite AI
+    const prompt = `You are an expert agricultural consultant with deep knowledge of crop seasonality and optimal planting strategies. Analyze the following farming scenario and provide comprehensive optimal crop season recommendations using advanced agricultural science and data analysis.
+
+FARMING SCENARIO:
+- Crop Type: ${cropType}
+- Region/Location: ${region}
+- Soil Type: ${soilType || 'Standard agricultural soil'}
+- Farm Size: ${farmSize || 'Medium scale'}
+- Current Year: ${currentYear || new Date().getFullYear()}
+- Water Availability: ${waterAvailability || 'Moderate'}
+- Climate Conditions: ${climateConditions || 'Regional standard'}
+- Farming Experience: ${farmingExperience || 'Intermediate'}
+- Budget Range: ${budgetRange || 'Moderate'}
+- Sustainability Preference: ${sustainabilityPreference || 'Standard'}
+
+COMPREHENSIVE ANALYSIS REQUIRED:
+
+1. OPTIMAL PLANTING SEASONS:
+   - Primary optimal season with exact months
+   - Secondary season options (if applicable)
+   - Regional climate pattern analysis
+   - Weather window recommendations
+
+2. SEASONAL TIMING BREAKDOWN:
+   - Pre-planting preparation timeline
+   - Optimal sowing dates (specific date ranges)
+   - Growth phase timing expectations
+   - Harvest window predictions
+
+3. CLIMATE & WEATHER CONSIDERATIONS:
+   - Temperature requirements and tolerance
+   - Rainfall pattern optimization
+   - Humidity and wind factor analysis
+   - Extreme weather risk assessment
+
+4. SOIL & ENVIRONMENTAL FACTORS:
+   - Soil preparation timing requirements
+   - Nutrient availability by season
+   - Pest and disease seasonal patterns
+   - Water management strategies
+
+5. YIELD OPTIMIZATION STRATEGIES:
+   - Expected yield by season comparison
+   - Quality factors for different seasons
+   - Market price seasonal trends
+   - Storage and post-harvest considerations
+
+6. RISK MANAGEMENT:
+   - Weather-related risks by season
+   - Market volatility assessment
+   - Crop insurance considerations
+   - Contingency planning for climate variations
+
+7. RESOURCE PLANNING:
+   - Labor requirement scheduling
+   - Equipment and machinery needs
+   - Input cost optimization by season
+   - Infrastructure preparation timeline
+
+8. SUSTAINABILITY METRICS:
+   - Water usage efficiency by season
+   - Carbon footprint considerations
+   - Soil health impact assessment
+   - Ecosystem benefits analysis
+
+9. ECONOMIC ANALYSIS:
+   - Profitability comparison across seasons
+   - Cost-benefit analysis for each option
+   - Market demand seasonal variations
+   - Price premium opportunities
+
+10. ACTIONABLE RECOMMENDATIONS:
+    - Step-by-step implementation plan
+    - Critical success factors monitoring
+    - Performance metrics and KPIs
+    - Long-term sustainability planning
+
+Provide specific, data-driven recommendations with confidence scores (0-100%) for each seasonal option. Include both immediate (current year) and strategic (multi-year) planning guidance.`;
+
+    const optimalModel = selectGraniteModel('crop-recommendation');
+    const aiResponse = await callGraniteModel(prompt, optimalModel, 1200);
+
+    // Parse and structure the optimal season response
+    const optimalSeasonData = {
+      optimalSeasons: extractOptimalSeasons(aiResponse),
+      seasonalTimeline: extractSeasonalTimeline(aiResponse),
+      weatherConsiderations: extractWeatherFactors(aiResponse),
+      yieldProjections: extractYieldProjections(aiResponse),
+      riskAssessment: extractSeasonalRisks(aiResponse),
+      economicAnalysis: extractSeasonalEconomics(aiResponse),
+      resourcePlanning: extractResourceRequirements(aiResponse),
+      sustainabilityMetrics: extractSeasonalSustainability(aiResponse),
+      actionPlan: extractSeasonalActionPlan(aiResponse),
+      confidence: extractConfidenceScore(aiResponse) || 0.88
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Optimal crop season analysis generated via IBM Granite AI",
+      data: optimalSeasonData,
+      model: optimalModel,
+      source: `IBM Granite AI (${optimalModel})`,
+      rawResponse: aiResponse,
+      analysisType: "optimal_crop_season_prediction",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Optimal crop season prediction error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Failed to generate optimal crop season recommendations',
+      fallback: {
+        message: "Unable to generate detailed season analysis. Please consult with local agricultural experts.",
+        basicRecommendation: "Consider regional climate patterns and historical data for crop timing decisions"
+      }
+    });
+  }
+});
+
+// Helper functions for parsing optimal crop season response
+function extractOptimalSeasons(response) {
+  const seasons = [];
+  const lines = response.split('\n');
+  
+  lines.forEach(line => {
+    if (line.toLowerCase().includes('optimal') && (line.toLowerCase().includes('season') || line.toLowerCase().includes('month'))) {
+      const season = {
+        name: extractSeasonName(line) || 'Primary season',
+        months: extractMonths(line) || 'Season dependent',
+        suitability: extractSuitabilityScore(line) || 'High',
+        reasons: extractSeasonReasons(line) || 'Optimal climate conditions'
+      };
+      if (season.name !== 'Primary season') seasons.push(season);
+    }
+  });
+  
+  return seasons.length > 0 ? seasons : [
+    { name: 'Kharif Season', months: 'June-October', suitability: 'High', reasons: 'Monsoon season with adequate rainfall' },
+    { name: 'Rabi Season', months: 'November-April', suitability: 'Medium', reasons: 'Winter season with controlled irrigation' },
+    { name: 'Zaid Season', months: 'March-June', suitability: 'Low', reasons: 'Summer season requiring intensive irrigation' }
+  ];
+}
+
+function extractSeasonalTimeline(response) {
+  return {
+    preparation: extractPreparationTime(response) || '2-4 weeks before sowing',
+    sowing: extractSowingTime(response) || 'Beginning of optimal season',
+    growth: extractGrowthPeriod(response) || '60-120 days depending on crop variety',
+    harvest: extractHarvestTime(response) || 'End of growing season when mature'
+  };
+}
+
+function extractWeatherFactors(response) {
+  return {
+    temperature: extractTemperatureRange(response) || '20-30°C optimal range',
+    rainfall: extractRainfallRequirement(response) || '600-1200mm seasonal requirement',
+    humidity: extractHumidityRange(response) || '60-80% relative humidity',
+    windConditions: extractWindFactors(response) || 'Moderate wind protection recommended'
+  };
+}
+
+function extractYieldProjections(response) {
+  return {
+    expectedYield: extractSeasonalYield(response) || 'Varies by season and management',
+    qualityFactors: extractQualityFactors(response) || 'High quality achievable with proper timing',
+    yieldVariability: extractYieldVariability(response) || '±15-25% based on weather variations'
+  };
+}
+
+function extractSeasonalRisks(response) {
+  return {
+    weatherRisk: extractWeatherRiskFactors(response) || 'Climate variability and extreme weather events',
+    pestRisk: extractPestSeasonality(response) || 'Seasonal pest and disease pressure',
+    marketRisk: extractMarketSeasonality(response) || 'Price fluctuations based on supply and demand'
+  };
+}
+
+function extractSeasonalEconomics(response) {
+  return {
+    profitability: extractSeasonalProfitability(response) || 'Higher profits during optimal seasons',
+    costVariation: extractSeasonalCosts(response) || 'Input costs vary by season',
+    marketPricing: extractSeasonalPricing(response) || 'Premium prices for off-season production'
+  };
+}
+
+function extractResourceRequirements(response) {
+  return {
+    waterNeeds: extractWaterRequirement(response) || 'Irrigation scheduling based on rainfall patterns',
+    laborSchedule: extractLaborRequirement(response) || 'Peak labor during sowing and harvest',
+    inputTiming: extractInputSchedule(response) || 'Fertilizer and pesticide application timing'
+  };
+}
+
+function extractSeasonalSustainability(response) {
+  return {
+    waterEfficiency: extractWaterEfficiency(response) || 'Optimized water use through season selection',
+    soilHealth: extractSoilHealthImpact(response) || 'Improved soil health through proper crop timing',
+    climateResilience: extractClimateResilience(response) || 'Enhanced adaptation to climate variations'
+  };
+}
+
+function extractSeasonalActionPlan(response) {
+  return {
+    immediate: 'Soil testing and preparation for upcoming season',
+    shortTerm: 'Implement optimal planting schedule within 30 days',
+    longTerm: 'Develop multi-season crop calendar for sustained productivity',
+    monitoring: 'Track weather patterns and adjust timing as needed'
+  };
+}
+
+// Additional helper functions for optimal crop season parsing
+function extractSeasonName(text) {
+  const seasonTerms = ['kharif', 'rabi', 'zaid', 'summer', 'winter', 'monsoon', 'spring', 'autumn'];
+  const found = seasonTerms.find(term => text.toLowerCase().includes(term));
+  return found ? found.charAt(0).toUpperCase() + found.slice(1) + ' Season' : null;
+}
+
+function extractMonths(text) {
+  const monthMatch = text.match(/(?:january|february|march|april|may|june|july|august|september|october|november|december)[^.]*?(?:january|february|march|april|may|june|july|august|september|october|november|december)/i);
+  return monthMatch ? monthMatch[0] : null;
+}
+
+function extractSuitabilityScore(text) {
+  const suitabilityTerms = ['excellent', 'high', 'good', 'medium', 'fair', 'low', 'poor'];
+  const found = suitabilityTerms.find(term => text.toLowerCase().includes(term));
+  return found ? found.charAt(0).toUpperCase() + found.slice(1) : null;
+}
+
+function extractSeasonReasons(text) {
+  if (text.toLowerCase().includes('rainfall') || text.toLowerCase().includes('monsoon')) return 'Optimal rainfall and moisture conditions';
+  if (text.toLowerCase().includes('temperature') || text.toLowerCase().includes('climate')) return 'Favorable temperature and climate conditions';
+  if (text.toLowerCase().includes('irrigation') || text.toLowerCase().includes('water')) return 'Adequate water availability and irrigation';
+  return null;
+}
+
+function extractPreparationTime(response) {
+  const match = response.match(/(?:preparation|prepare)[\s\S]*?(\d+[-–]?\d*\s*(?:weeks?|months?|days?))/i);
+  return match ? match[1] : null;
+}
+
+function extractSowingTime(response) {
+  const match = response.match(/(?:sowing|planting)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractGrowthPeriod(response) {
+  const match = response.match(/(?:growth|growing)[\s\S]*?(\d+[-–]?\d*\s*(?:days?|weeks?|months?))/i);
+  return match ? match[1] : null;
+}
+
+function extractHarvestTime(response) {
+  const match = response.match(/(?:harvest|harvesting)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractTemperatureRange(response) {
+  const match = response.match(/(\d+[-–]?\d*°?[CF]?\s*[-–]\s*\d+[-–]?\d*°?[CF]?)/);
+  return match ? match[1] : null;
+}
+
+function extractRainfallRequirement(response) {
+  const match = response.match(/(\d+[-–]?\d*\s*mm)/i);
+  return match ? match[1] : null;
+}
+
+function extractHumidityRange(response) {
+  const match = response.match(/(\d+[-–]?\d*%?\s*[-–]\s*\d+[-–]?\d*%?)/);
+  return match ? match[1] : null;
+}
+
+function extractWindFactors(response) {
+  const match = response.match(/wind[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractSeasonalYield(response) {
+  const match = response.match(/(?:yield|production)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractQualityFactors(response) {
+  const match = response.match(/quality[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractYieldVariability(response) {
+  const match = response.match(/(?:variability|variation)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractWeatherRiskFactors(response) {
+  const match = response.match(/weather[\s\S]*?risk[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractPestSeasonality(response) {
+  const match = response.match(/pest[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractMarketSeasonality(response) {
+  const match = response.match(/market[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractSeasonalProfitability(response) {
+  const match = response.match(/profitability[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractSeasonalCosts(response) {
+  const match = response.match(/cost[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractSeasonalPricing(response) {
+  const match = response.match(/pricing[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractWaterRequirement(response) {
+  const match = response.match(/water[\s\S]*?requirement[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractLaborRequirement(response) {
+  const match = response.match(/labor[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractInputSchedule(response) {
+  const match = response.match(/input[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractSoilHealthImpact(response) {
+  const match = response.match(/soil[\s\S]*?health[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractClimateResilience(response) {
+  const match = response.match(/climate[\s\S]*?resilience[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
 }
 
 // Test route for IBM Watson connection
@@ -1243,3 +1612,299 @@ function extractHarvestTiming(text) {
   if (timingMatch) return timingMatch[1].trim();
   return "Harvest when crops reach physiological maturity";
 }
+
+// Optimal Crop Season Prediction using IBM Granite AI
+app.post("/api/ai/optimal-crop-season", async (req, res) => {
+  try {
+    const { 
+      cropType, 
+      region, 
+      soilType, 
+      farmSize, 
+      currentYear,
+      waterAvailability,
+      climateConditions,
+      farmingExperience,
+      budgetRange,
+      sustainabilityPreference
+    } = req.body;
+
+    if (!cropType || !region) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Crop type and region are required" 
+      });
+    }
+
+    // Create comprehensive prompt for IBM Granite AI
+    const prompt = `You are an expert agricultural consultant with deep knowledge of crop seasonality and optimal planting strategies. Analyze the following farming scenario and provide comprehensive optimal crop season recommendations using advanced agricultural science and data analysis.
+
+FARMING SCENARIO:
+- Crop Type: ${cropType}
+- Region/Location: ${region}
+- Soil Type: ${soilType || 'Standard agricultural soil'}
+- Farm Size: ${farmSize || 'Medium scale'}
+- Current Year: ${currentYear || new Date().getFullYear()}
+- Water Availability: ${waterAvailability || 'Moderate'}
+- Climate Conditions: ${climateConditions || 'Regional standard'}
+- Farming Experience: ${farmingExperience || 'Intermediate'}
+- Budget Range: ${budgetRange || 'Moderate'}
+- Sustainability Preference: ${sustainabilityPreference || 'Standard'}
+
+COMPREHENSIVE ANALYSIS REQUIRED:
+
+1. OPTIMAL PLANTING SEASONS:
+   - Primary optimal season with exact months
+   - Secondary season options (if applicable)
+   - Regional climate pattern analysis
+   - Weather window recommendations
+
+2. SEASONAL TIMING BREAKDOWN:
+   - Pre-planting preparation timeline
+   - Optimal sowing dates (specific date ranges)
+   - Growth phase timing expectations
+   - Harvest window predictions
+
+3. CLIMATE & WEATHER CONSIDERATIONS:
+   - Temperature requirements and tolerance
+   - Rainfall pattern optimization
+   - Humidity and wind factor analysis
+   - Extreme weather risk assessment
+
+4. SOIL & ENVIRONMENTAL FACTORS:
+   - Soil preparation timing requirements
+   - Nutrient availability by season
+   - Pest and disease seasonal patterns
+   - Water management strategies
+
+5. YIELD OPTIMIZATION STRATEGIES:
+   - Expected yield by season comparison
+   - Quality factors for different seasons
+   - Market price seasonal trends
+   - Storage and post-harvest considerations
+
+6. RISK MANAGEMENT:
+   - Weather-related risks by season
+   - Market volatility assessment
+   - Crop insurance considerations
+   - Contingency planning for climate variations
+
+7. RESOURCE PLANNING:
+   - Labor requirement scheduling
+   - Equipment and machinery needs
+   - Input cost optimization by season
+   - Infrastructure preparation timeline
+
+8. SUSTAINABILITY METRICS:
+   - Water usage efficiency by season
+   - Carbon footprint considerations
+   - Soil health impact assessment
+   - Ecosystem benefits analysis
+
+9. ECONOMIC ANALYSIS:
+   - Profitability comparison across seasons
+   - Cost-benefit analysis for each option
+   - Market demand seasonal variations
+   - Price premium opportunities
+
+10. ACTIONABLE RECOMMENDATIONS:
+    - Step-by-step implementation plan
+    - Critical success factors monitoring
+    - Performance metrics and KPIs
+    - Long-term sustainability planning
+
+Provide specific, data-driven recommendations with confidence scores (0-100%) for each seasonal option. Include both immediate (current year) and strategic (multi-year) planning guidance.`;
+
+    const optimalModel = selectGraniteModel('crop-recommendation');
+    const aiResponse = await callGraniteModel(prompt, optimalModel, 1200);
+
+    // Parse and structure the optimal season response
+    const optimalSeasonData = {
+      optimalSeasons: extractOptimalSeasons(aiResponse),
+      seasonalTimeline: extractSeasonalTimeline(aiResponse),
+      weatherConsiderations: extractWeatherFactors(aiResponse),
+      yieldProjections: extractYieldProjections(aiResponse),
+      riskAssessment: extractSeasonalRisks(aiResponse),
+      economicAnalysis: extractSeasonalEconomics(aiResponse),
+      resourcePlanning: extractResourceRequirements(aiResponse),
+      sustainabilityMetrics: extractSeasonalSustainability(aiResponse),
+      actionPlan: extractSeasonalActionPlan(aiResponse),
+      confidence: extractConfidenceScore(aiResponse) || 0.88
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Optimal crop season analysis generated via IBM Granite AI",
+      data: optimalSeasonData,
+      model: optimalModel,
+      source: `IBM Granite AI (${optimalModel})`,
+      rawResponse: aiResponse,
+      analysisType: "optimal_crop_season_prediction",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Optimal crop season prediction error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Failed to generate optimal crop season recommendations',
+      fallback: {
+        message: "Unable to generate detailed season analysis. Please consult with local agricultural experts.",
+        basicRecommendation: "Consider regional climate patterns and historical data for crop timing decisions"
+      }
+    });
+  }
+});
+
+// Helper functions for parsing optimal crop season response
+function extractOptimalSeasons(response) {
+  const seasons = [];
+  const lines = response.split('\n');
+  
+  lines.forEach(line => {
+    if (line.toLowerCase().includes('optimal') && (line.toLowerCase().includes('season') || line.toLowerCase().includes('month'))) {
+      const season = {
+        name: extractSeasonName(line) || 'Primary season',
+        months: extractMonths(line) || 'Season dependent',
+        suitability: extractSuitabilityScore(line) || 'High',
+        reasons: extractSeasonReasons(line) || 'Optimal climate conditions'
+      };
+      if (season.name !== 'Primary season') seasons.push(season);
+    }
+  });
+  
+  return seasons.length > 0 ? seasons : [
+    { name: 'Kharif Season', months: 'June-October', suitability: 'High', reasons: 'Monsoon season with adequate rainfall' },
+    { name: 'Rabi Season', months: 'November-April', suitability: 'Medium', reasons: 'Winter season with controlled irrigation' },
+    { name: 'Zaid Season', months: 'March-June', suitability: 'Low', reasons: 'Summer season requiring intensive irrigation' }
+  ];
+}
+
+function extractSeasonalTimeline(response) {
+  return {
+    preparation: extractPreparationTime(response) || '2-4 weeks before sowing',
+    sowing: extractSowingTime(response) || 'Beginning of optimal season',
+    growth: extractGrowthPeriod(response) || '60-120 days depending on crop variety',
+    harvest: extractHarvestTime(response) || 'End of growing season when mature'
+  };
+}
+
+function extractWeatherFactors(response) {
+  return {
+    temperature: extractTemperatureRange(response) || '20-30°C optimal range',
+    rainfall: extractRainfallRequirement(response) || '600-1200mm seasonal requirement',
+    humidity: extractHumidityRange(response) || '60-80% relative humidity',
+    windConditions: extractWindFactors(response) || 'Moderate wind protection recommended'
+  };
+}
+
+function extractYieldProjections(response) {
+  return {
+    expectedYield: extractSeasonalYield(response) || 'Varies by season and management',
+    qualityFactors: extractQualityFactors(response) || 'High quality achievable with proper timing',
+    yieldVariability: extractYieldVariability(response) || '±15-25% based on weather variations'
+  };
+}
+
+function extractSeasonalRisks(response) {
+  return {
+    weatherRisk: extractWeatherRiskFactors(response) || 'Climate variability and extreme weather events',
+    pestRisk: extractPestSeasonality(response) || 'Seasonal pest and disease pressure',
+    marketRisk: extractMarketSeasonality(response) || 'Price fluctuations based on supply and demand'
+  };
+}
+
+function extractSeasonalEconomics(response) {
+  return {
+    profitability: extractSeasonalProfitability(response) || 'Higher profits during optimal seasons',
+    costVariation: extractSeasonalCosts(response) || 'Input costs vary by season',
+    marketPricing: extractSeasonalPricing(response) || 'Premium prices for off-season production'
+  };
+}
+
+function extractResourceRequirements(response) {
+  return {
+    waterNeeds: extractWaterRequirement(response) || 'Irrigation scheduling based on rainfall patterns',
+    laborSchedule: extractLaborRequirement(response) || 'Peak labor during sowing and harvest',
+    inputTiming: extractInputSchedule(response) || 'Fertilizer and pesticide application timing'
+  };
+}
+
+function extractSeasonalSustainability(response) {
+  return {
+    waterEfficiency: extractWaterEfficiency(response) || 'Optimized water use through season selection',
+    soilHealth: extractSoilHealthImpact(response) || 'Improved soil health through proper crop timing',
+    climateResilience: extractClimateResilience(response) || 'Enhanced adaptation to climate variations'
+  };
+}
+
+function extractSeasonalActionPlan(response) {
+  return {
+    immediate: 'Soil testing and preparation for upcoming season',
+    shortTerm: 'Implement optimal planting schedule within 30 days',
+    longTerm: 'Develop multi-season crop calendar for sustained productivity',
+    monitoring: 'Track weather patterns and adjust timing as needed'
+  };
+}
+
+// Additional helper functions for optimal crop season parsing
+function extractSeasonName(text) {
+  const seasonTerms = ['kharif', 'rabi', 'zaid', 'summer', 'winter', 'monsoon', 'spring', 'autumn'];
+  const found = seasonTerms.find(term => text.toLowerCase().includes(term));
+  return found ? found.charAt(0).toUpperCase() + found.slice(1) + ' Season' : null;
+}
+
+function extractMonths(text) {
+  const monthMatch = text.match(/(?:january|february|march|april|may|june|july|august|september|october|november|december)[^.]*?(?:january|february|march|april|may|june|july|august|september|october|november|december)/i);
+  return monthMatch ? monthMatch[0] : null;
+}
+
+function extractSuitabilityScore(text) {
+  const suitabilityTerms = ['excellent', 'high', 'good', 'medium', 'fair', 'low', 'poor'];
+  const found = suitabilityTerms.find(term => text.toLowerCase().includes(term));
+  return found ? found.charAt(0).toUpperCase() + found.slice(1) : null;
+}
+
+function extractSeasonReasons(text) {
+  if (text.toLowerCase().includes('rainfall') || text.toLowerCase().includes('monsoon')) return 'Optimal rainfall and moisture conditions';
+  if (text.toLowerCase().includes('temperature') || text.toLowerCase().includes('climate')) return 'Favorable temperature and climate conditions';
+  if (text.toLowerCase().includes('irrigation') || text.toLowerCase().includes('water')) return 'Adequate water availability and irrigation';
+  return null;
+}
+
+function extractPreparationTime(response) {
+  const match = response.match(/(?:preparation|prepare)[\s\S]*?(\d+[-–]?\d*\s*(?:weeks?|months?|days?))/i);
+  return match ? match[1] : null;
+}
+
+function extractSowingTime(response) {
+  const match = response.match(/(?:sowing|planting)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractGrowthPeriod(response) {
+  const match = response.match(/(?:growth|growing)[\s\S]*?(\d+[-–]?\d*\s*(?:days?|weeks?|months?))/i);
+  return match ? match[1] : null;
+}
+
+function extractHarvestTime(response) {
+  const match = response.match(/(?:harvest|harvesting)[\s\S]*?([^\n.]+)/i);
+  return match ? match[1].trim() : null;
+}
+
+function extractTemperatureRange(response) {
+  const match = response.match(/(\d+[-–]?\d*°?[CF]?\s*[-–]\s*\d+[-–]?\d*°?[CF]?)/);
+  return match ? match[1] : null;
+}
+
+function extractRainfallRequirement(response) {
+  const match = response.match(/(\d+[-–]?\d*\s*mm)/i);
+  return match ? match[1] : null;
+}
+
+function extractHumidityRange(response) {
+  const match = response.match(/(\d+[-–]?\d*%?\s*[-–]\s*\d+[-–]?\d*%?)/);
+  return match ? match[1] : null;
+}
+
+//# sourceMappingURL=index.js.map

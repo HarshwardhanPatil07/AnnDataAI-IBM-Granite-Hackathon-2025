@@ -97,6 +97,11 @@ class IBMGraniteService {
   async getCropSwappingStrategy(swappingData) {
     return this.makeRequest('/crop-swapping-strategy', swappingData);
   }
+
+  // Optimal Crop Season Prediction using IBM Granite AI
+  async getOptimalCropSeason(seasonData) {
+    return this.makeRequest('/optimal-crop-season', seasonData);
+  }
 }
 
 export default new IBMGraniteService();

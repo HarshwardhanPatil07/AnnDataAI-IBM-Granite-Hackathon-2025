@@ -256,7 +256,7 @@ npm run dev  # Port 5173
 ## 🎬 DEMO VIDEO
 
 ### **Video Demonstrations**
-- **🎥 Full Platform Demo:** [https://youtu.be/WJo2y8v2pMc](https://youtu.be/WJo2y8v2pMc)
+- **🎥 Full Platform Demo:** [https://youtu.be/jVVNsxW42_U](https://youtu.be/jVVNsxW42_U)
 
 
 ## COMPETITIVE ADVANTAGES
